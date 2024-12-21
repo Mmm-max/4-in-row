@@ -32,10 +32,17 @@ public class Board {
         return width;
     }
 
+    public int isFull(int moves) {
+        if (moves == length * width) {
+            return 1;
+        }
+        return 0;
+    }
+
     public void printBoard() {
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                System.out.print(board[i][j] + " ");
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < length; j++) {
+                System.out.print(board[j][i] + " ");
             }
             System.out.println();
         }
@@ -56,6 +63,7 @@ public class Board {
     }
 
     public int makeMove(int x, int player) {
+        System.out.println("Making move " + x + " for player " + player);
         if (isLegalMove(x) == 0) {
             return -1;
         }
@@ -65,7 +73,7 @@ public class Board {
     }
 
     private int get_y_coord(int x) {
-        for (int i = width; i >= 0; i--) {
+        for (int i = width - 1; i >= 0; i--) {
             if (board[x][i] == 0) {
                 return i;
             }
@@ -75,7 +83,7 @@ public class Board {
 
 
 
-    private int isWinningMove(int x, int player) {
+    public int isWinningMove(int x, int player) {
         int y = get_y_coord(x);
 
         // Check horizontal

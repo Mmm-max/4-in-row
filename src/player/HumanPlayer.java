@@ -13,6 +13,7 @@ public class HumanPlayer extends Player {
 
     @Override
     public int getMove(Board board) {
+        System.out.println("Enter your move:");
         int move = scanner.nextInt();
         if (board.isLegalMove(move) == 0) {
             System.out.println("Illegal move");
