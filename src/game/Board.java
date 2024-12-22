@@ -89,13 +89,15 @@ public class Board {
 
         // Check horizontal
         for (int i = max(0, x - 3); i < length - 3; i++) {
-            if (board[y][x] == player && board[y][i + 1] == player && board[y][i + 2] == player && board[y][i + 3] == player) {
+            if (board[y][x] == player && board[y][i + 1] ==
+                    player && board[y][i + 2] == player && board[y][i + 3] == player) {
                 return 1;
             }
         }
         // Check vertical
         for (int i = max(0, y - 3); i < width - 3; i++) {
-            if (board[i][x] == player && board[i + 1][x] == player && board[i + 2][x] == player && board[i + 3][x] == player) {
+            if (board[i][x] == player && board[i + 1][x] ==
+                    player && board[i + 2][x] == player && board[i + 3][x] == player) {
                 return 1;
             }
         }
@@ -105,7 +107,8 @@ public class Board {
         // Check diagonal left
         for (int i = 0; i <= 3; i++) {
             try {
-                if (board[y - i][x - i] == player && board[y - i - 1][x - i - 1] == player && board[y - i - 2][x - i - 2] == player && board[y - i - 3][x - i - 3] == player) {
+                if (board[y - i][x - i] == player && board[y - i - 1][x - i - 1] ==
+                        player && board[y - i - 2][x - i - 2] == player && board[y - i - 3][x - i - 3] == player) {
                     return 1;
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
@@ -116,7 +119,8 @@ public class Board {
         // Check diagonal right
         for (int i = 0; i <= 3; i++) {
             try {
-                if (board[y - i][x + i] == player && board[y - i + 1][x + i - 1] == player && board[y - i + 2][x + i - 2] == player && board[y - i + 3][x + i - 3] == player) {
+                if (board[y - i][x + i] == player && board[y - i + 1][x + i - 1] ==
+                        player && board[y - i + 2][x + i - 2] == player && board[y - i + 3][x + i - 3] == player) {
                     return 1;
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
