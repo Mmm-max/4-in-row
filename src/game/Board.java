@@ -13,7 +13,7 @@ public class Board {
         return a > b ? a : b;
     }
     public Board(int x, int y) {
-        board = new int[x][y];
+        board = new int[y][x];
         length = x;
         width = y;
     }
@@ -40,22 +40,23 @@ public class Board {
     }
 
     public void printBoard() {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < length; j++) {
-                System.out.print(board[j][i] + " ");
+        for (int y = 0; y < width; y++) {
+            for (int x = 0; x < length; x++) {
+                System.out.print(board[y][x] + " ");
             }
             System.out.println();
         }
     }
 
     private int getCell(int x, int y) {
-        return board[x][y];
+        return board[y][x];
     }
 
     public int isLegalMove(int x) {
         if (x < 0 || x >= length) {
             return 0;
         }
+
         if (getCell(x, 0) == 0) {
             return 1;
         }
@@ -63,18 +64,17 @@ public class Board {
     }
 
     public int makeMove(int x, int player) {
-        System.out.println("Making move " + x + " for player " + player);
         if (isLegalMove(x) == 0) {
             return -1;
         }
         int y = get_y_coord(x);
-        board[x][y] = player;
+        board[y][x] = player;
         return isWinningMove(x, player);
     }
 
     private int get_y_coord(int x) {
         for (int i = width - 1; i >= 0; i--) {
-            if (board[x][i] == 0) {
+            if (board[i][x] == 0) {
                 return i;
             }
         }
@@ -84,17 +84,18 @@ public class Board {
 
 
     public int isWinningMove(int x, int player) {
-        int y = get_y_coord(x);
+        int y = get_y_coord(x) + 1;
+//        System.out.println("isWinning y: " + y);
 
         // Check horizontal
         for (int i = max(0, x - 3); i < length - 3; i++) {
-            if (board[i][y] == player && board[i + 1][y] == player && board[i + 2][y] == player && board[i + 3][y] == player) {
+            if (board[y][x] == player && board[y][i + 1] == player && board[y][i + 2] == player && board[y][i + 3] == player) {
                 return 1;
             }
         }
         // Check vertical
         for (int i = max(0, y - 3); i < width - 3; i++) {
-            if (board[x][i] == player && board[x][i + 1] == player && board[x][i + 2] == player && board[x][i + 3] == player) {
+            if (board[i][x] == player && board[i + 1][x] == player && board[i + 2][x] == player && board[i + 3][x] == player) {
                 return 1;
             }
         }
@@ -102,8 +103,26 @@ public class Board {
         // Check diagonal
 
         // Check diagonal left
+        for (int i = 0; i <= 3; i++) {
+            try {
+                if (board[y - i][x - i] == player && board[y - i - 1][x - i - 1] == player && board[y - i - 2][x - i - 2] == player && board[y - i - 3][x - i - 3] == player) {
+                    return 1;
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                continue;
+            }
+        }
 
         // Check diagonal right
+        for (int i = 0; i <= 3; i++) {
+            try {
+                if (board[y - i][x + i] == player && board[y - i + 1][x + i - 1] == player && board[y - i + 2][x + i - 2] == player && board[y - i + 3][x + i - 3] == player) {
+                    return 1;
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                continue;
+            }
+        }
         return 0;
     }
 }
