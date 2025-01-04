@@ -5,10 +5,22 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class ConnectFourGUI extends javafx.application.Application {
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+
+import game.*;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public class ConnectFourGUI extends javafx.application.Application implements BoardChangeListener {
     private static final int ROWS = 6;
     private static final int COLUMNS = 7;
     private GridPane gridPane;
+    private int x = 0;
+    private int y = 0;
+    private int player = 0;
+    private List<CellClickListener> listeners = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) {
@@ -23,7 +35,7 @@ public class ConnectFourGUI extends javafx.application.Application {
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLUMNS; col++) {
                 StackPane cell = new StackPane();
-                cell.setStyle("-fx-background-color: lightblue; -fx-border-color: black;");
+                cell.setStyle("-fx-background-player: lightblue; -fx-border-player: black;");
                 cell.setPrefSize(80, 80);
                 gridPane.add(cell, col, row);
                 int finalCol = col;
@@ -31,7 +43,37 @@ public class ConnectFourGUI extends javafx.application.Application {
             }
         }
 
-        Scene scene= Scene(gridPane);
+        Scene scene = new Scene(gridPane);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+    public void drawMove(int x, int y, int player) {
+        Circle circle = new Circle(30);
+        circle.setFill(player == 0 ? Color.RED : Color.YELLOW);
+        StackPane cell = (StackPane) gridPane.getChildren().get(y * COLUMNS + x);
+        cell.getChildren().add(circle);
+    }
+    @Override
+    public void addListener(CellClickListener listener) {
+        listeners.add(listener);
+    }
+    private void handleMouseClick(int col) {
+        System.out.println("Column " + col + " clicked");
 
+    }
+    public static void main(String[] args) {
+        launch(args);
+    }
+    
+    @Override
+    public void onBoardChange(int x, int y, int player) {
+        drawMove(x, y, player);
+    }
+
+    @Override
+    public void notifyListeners(int x, int y, int player) {
+        for (CellClickListener listener : listeners) {
+            listener.onCellClick(x);
+        }
     }
 }

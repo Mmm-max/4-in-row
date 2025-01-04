@@ -1,9 +1,14 @@
 package game;
+import java.util.List;
+import java.util.ArrayList;
 
-public class Board {
+public class Board implements CellClickListener {
     int[][] board;
     int length;
     int width;
+    int player = 1;
+    List<BoardChangeListener> listeners = new ArrayList<>();
+
 
     public static int min(int a, int b) {
         return a < b ? a : b;
@@ -12,6 +17,19 @@ public class Board {
     public static int max(int a, int b) {
         return a > b ? a : b;
     }
+
+    @Override
+    public void addListener(BoardChangeListener listener) {
+        listeners.add(listener);
+    }
+
+    public int getCurrPlayer() {
+        return player;
+    }
+    public void switchPlayer() {
+        player = player == 1 ? 2 : 1;
+    }
+
     public Board(int x, int y) {
         board = new int[y][x];
         length = x;
@@ -23,7 +41,6 @@ public class Board {
         length = 8;
         width = 8;
     }
-
     public int getLength() {
         return length;
     }
@@ -128,5 +145,20 @@ public class Board {
             }
         }
         return 0;
+    }
+
+    @Override
+    public void onCellClick(int column) {
+        int row = get_y_coord(column);
+        if (row != -1) {
+            makeMove(column, getCurrPlayer());
+
+        }
+    }
+    @Override
+    public  void notifyListeners(int x, int y) {
+        for (BoardChangeListener listener : listeners) {
+            listener.onBoardChange(x, y, player);
+        }
     }
 }

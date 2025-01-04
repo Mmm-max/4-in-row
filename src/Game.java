@@ -4,6 +4,7 @@ import player.*;
 
 public class Game {
     private Board board;
+    private ConnectFourGUI gui;
     private Player player1;
     private Player player2;
     private Player currentPlayer;
@@ -11,6 +12,9 @@ public class Game {
 
     public Game() {
         board = new Board();
+        ConnectFourGUI gui = new ConnectFourGUI();
+        board.addListener(gui);
+        gui.addListener(board);
         player1 = new HumanPlayer("Player 1", 1);
         player2 = new HumanPlayer("Player 2", 2);
         currentPlayer = player1;
