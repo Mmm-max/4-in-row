@@ -1,3 +1,4 @@
+import GUI.ConnectFourGUI;
 import game.*;
 import player.*;
 
@@ -10,13 +11,16 @@ public class Game {
     private Player currentPlayer;
     private int movesCnt = 0;
 
+    // two players
     public Game() {
         board = new Board();
         ConnectFourGUI gui = new ConnectFourGUI();
-        board.addListener(gui);
-        gui.addListener(board);
+//        board.addListener(gui);
+//        gui.addListener(board);
         player1 = new HumanPlayer("Player 1", 1);
         player2 = new HumanPlayer("Player 2", 2);
+        gui.addListener((HumanPlayer) player1);
+        gui.addListener((HumanPlayer) player2);
         currentPlayer = player1;
     }
 
@@ -29,9 +33,10 @@ public class Game {
     }
 
     public void start() {
+        new Thread(() -> ConnectFourGUI.launch(ConnectFourGUI.class)).start();
         while (true) {
             System.out.println(currentPlayer.getName() + "'s turn");
-            int move = currentPlayer.getMove(board);
+            int move = ((HumanPlayer) currentPlayer).getMoveByGui(board);
             board.makeMove(move, currentPlayer.getPlayerNumber());
             board.printBoard();
             movesCnt++;

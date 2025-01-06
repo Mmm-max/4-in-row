@@ -7,7 +7,16 @@ public class AIPlayer extends Player {
     }
 
     @Override
-    public int getMove(Board board) {
+    public int getMoveByConsole(Board board) {
         return 0;
     }
+
+    @Override
+    protected void NotifiedBoardListener() {}
+
+    @Override
+    protected void NotifiedGuiListener() {}
+
+    @Override
+    protected void GetCellByGui() {}
 }

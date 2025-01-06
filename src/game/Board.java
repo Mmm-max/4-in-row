@@ -2,7 +2,7 @@ package game;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Board implements CellClickListener {
+public class Board {
     int[][] board;
     int length;
     int width;
@@ -18,10 +18,10 @@ public class Board implements CellClickListener {
         return a > b ? a : b;
     }
 
-    @Override
-    public void addListener(BoardChangeListener listener) {
-        listeners.add(listener);
-    }
+//    @Override
+//    public void addListener(BoardChangeListener listener) {
+//        listeners.add(listener);
+//    }
 
     public int getCurrPlayer() {
         return player;
@@ -147,18 +147,18 @@ public class Board implements CellClickListener {
         return 0;
     }
 
-    @Override
-    public void onCellClick(int column) {
-        int row = get_y_coord(column);
-        if (row != -1) {
-            makeMove(column, getCurrPlayer());
-
-        }
-    }
-    @Override
-    public  void notifyListeners(int x, int y) {
-        for (BoardChangeListener listener : listeners) {
-            listener.onBoardChange(x, y, player);
-        }
-    }
+//    @Override
+//    public void onCellClick(int column) {
+//        int row = get_y_coord(column);
+//        if (row != -1) {
+//            makeMove(column, getCurrPlayer());
+//
+//        }
+//    }
+//    @Override
+//    public  void notifyListeners(int x, int y) {
+//        for (BoardChangeListener listener : listeners) {
+//            listener.onBoardChange(x, y, player);
+//        }
+//    }
 }
