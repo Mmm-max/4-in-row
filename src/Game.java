@@ -1,7 +1,10 @@
 import GUI.ConnectFourGUI;
 import game.*;
 import javafx.application.Platform;
+import javafx.stage.Stage;
 import player.*;
+
+import java.util.concurrent.CountDownLatch;
 
 
 public class Game {
@@ -13,12 +16,10 @@ public class Game {
     private int movesCnt = 0;
 
     // two players
-    public Game() {
+    public Game(ConnectFourGUI gui) {
         System.out.println("create game");
         board = new Board();
-        ConnectFourGUI gui = new ConnectFourGUI();
-//        board.addListener(gui);
-//        gui.addListener(board);
+        this.gui = gui;
         player1 = new HumanPlayer("Player 1", 1);
         player2 = new HumanPlayer("Player 2", 2);
         gui.addListener((HumanPlayer) player1);
@@ -54,9 +55,18 @@ public class Game {
 
     public static void main(String[] args) {
         // Запуск GUI в отдельном потоке
-        new Thread(() -> {
-            ConnectFourGUI.launch(ConnectFourGUI.class);
-        }).start();
+        CountDownLatch latch = new CountDownLatch(1);
+        ConnectFourGUI gui = new ConnectFourGUI();
+        Platform.startup(() -> {
+            try {
+                Stage primaryStage = new Stage();
+                gui.start(primaryStage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            latch.countDown();
+        });
+
         try {
             Thread.sleep(500); // Пауза в полсекунды
         } catch (InterruptedException e) {
@@ -65,7 +75,7 @@ public class Game {
         // Запуск игровой логики в основном потоке
         new Thread(() -> {
             System.out.println("start game");
-            Game game = new Game();
+            Game game = new Game(gui);
             game.start();
         }).start();
     }

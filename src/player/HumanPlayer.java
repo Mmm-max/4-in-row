@@ -53,6 +53,7 @@ public class HumanPlayer extends Player implements CellClickListener {
 
     @Override
     public void onCellClick(int column) {
+        System.out.println("HumanPlayer: onCellClick");
         move = column;
     }
 

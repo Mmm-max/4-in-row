@@ -23,6 +23,7 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
     private int y = 0;
     private int player = 0;
     private List<CellClickListener> listeners = new ArrayList<>();
+    private String name;
 
     @Override
     public void start(Stage primaryStage) {
@@ -58,11 +59,13 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
     }
     @Override
     public void addListener(CellClickListener listener) {
+        printListeners();
         listeners.add(listener);
+        System.out.println("ConnectFourGUI: addListener");
     }
     private void handleMouseClick(int col) {
         System.out.println("Column " + col + " clicked");
-
+        notifyListeners(col);
     }
     public static void main(String[] args) {
         launch(args);
@@ -74,9 +77,28 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
     }
 
     @Override
-    public void notifyListeners(int x, int y, int player) {
+    public void notifyListeners(int x) {
+        System.out.println("start notifyListeners");
+        printListeners();
         for (CellClickListener listener : listeners) {
+            System.out.println("ConnectFourGUI: notifyListeners");
             listener.onCellClick(x);
         }
+    }
+
+    @Override
+    public void printListeners() {
+        System.out.println("ConnectFourGUI: printListeners len:" + listeners.size());
+        for (CellClickListener listener : listeners) {
+            System.out.println(listener);
+        }
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 }
