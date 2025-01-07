@@ -1,5 +1,6 @@
 import GUI.ConnectFourGUI;
 import game.*;
+import javafx.application.Platform;
 import player.*;
 
 
@@ -13,6 +14,7 @@ public class Game {
 
     // two players
     public Game() {
+        System.out.println("create game");
         board = new Board();
         ConnectFourGUI gui = new ConnectFourGUI();
 //        board.addListener(gui);
@@ -33,7 +35,6 @@ public class Game {
     }
 
     public void start() {
-        new Thread(() -> ConnectFourGUI.launch(ConnectFourGUI.class)).start();
         while (true) {
             System.out.println(currentPlayer.getName() + "'s turn");
             int move = ((HumanPlayer) currentPlayer).getMoveByGui(board);
@@ -52,7 +53,20 @@ public class Game {
     }
 
     public static void main(String[] args) {
-        Game game = new Game();
-        game.start();
+        // Запуск GUI в отдельном потоке
+        new Thread(() -> {
+            ConnectFourGUI.launch(ConnectFourGUI.class);
+        }).start();
+        try {
+            Thread.sleep(500); // Пауза в полсекунды
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // Запуск игровой логики в основном потоке
+        new Thread(() -> {
+            System.out.println("start game");
+            Game game = new Game();
+            game.start();
+        }).start();
     }
 }

@@ -35,9 +35,10 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
         gridPane.setPadding(new Insets(10));
 
         for (int row = 0; row < ROWS; row++) {
+            System.out.println("Row: " + row);
             for (int col = 0; col < COLUMNS; col++) {
                 StackPane cell = new StackPane();
-                cell.setStyle("-fx-background-player: lightblue; -fx-border-player: black;");
+                cell.setStyle("-fx-background-color: lightblue; -fx-border-color: black;");
                 cell.setPrefSize(80, 80);
                 gridPane.add(cell, col, row);
                 int finalCol = col;
