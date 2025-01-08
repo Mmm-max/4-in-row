@@ -20,6 +20,7 @@ public class Game {
         System.out.println("create game");
         board = new Board();
         this.gui = gui;
+        board.addListener(gui);
         player1 = new HumanPlayer("Player 1", 1);
         player2 = new HumanPlayer("Player 2", 2);
         gui.addListener((HumanPlayer) player1);
@@ -44,9 +45,11 @@ public class Game {
             movesCnt++;
             if (board.isWinningMove(move, currentPlayer.getPlayerNumber()) == 1) {
                 System.out.println(currentPlayer.getName() + " wins!");
+                Platform.runLater(() -> gui.WictoryWindow(currentPlayer.getName()));
                 break;
             } else if (board.isFull(movesCnt) == 1) {
                 System.out.println("It's a draw!");
+                Platform.runLater(() -> gui.DrawWindow());
                 break;
             }
             switchPlayer();

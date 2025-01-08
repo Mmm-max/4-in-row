@@ -2,7 +2,7 @@ package game;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Board {
+public class Board implements CellClickListener{
     int[][] board;
     int length;
     int width;
@@ -38,8 +38,8 @@ public class Board {
 
     public Board() {
         board = new int[8][8];
-        length = 8;
-        width = 8;
+        length = 7;
+        width = 6;
     }
     public int getLength() {
         return length;
@@ -86,6 +86,7 @@ public class Board {
         }
         int y = get_y_coord(x);
         board[y][x] = player;
+        notifyListeners(x, y, player);
         return isWinningMove(x, player);
     }
 
@@ -106,8 +107,12 @@ public class Board {
 
         // Check horizontal
         for (int i = max(0, x - 3); i < length - 3; i++) {
-            if (board[y][x] == player && board[y][i + 1] ==
+            if (board[y][i] == player && board[y][i + 1] ==
                     player && board[y][i + 2] == player && board[y][i + 3] == player) {
+                System.out.println("1: " + board[y][i] + " 2: " + board[y][i + 1] + " 3: "
+                        + board[y][i + 2] + " 1: " + board[y][i + 3]);
+                System.out.println("y: " + y + " x: " + x + " player: " + player);
+                System.out.println("first test: " + (board[y][x] == player));
                 return 1;
             }
         }
@@ -147,18 +152,23 @@ public class Board {
         return 0;
     }
 
-//    @Override
-//    public void onCellClick(int column) {
+    @Override
+    public void onCellClick(int column) {
 //        int row = get_y_coord(column);
 //        if (row != -1) {
 //            makeMove(column, getCurrPlayer());
 //
 //        }
-//    }
-//    @Override
-//    public  void notifyListeners(int x, int y) {
-//        for (BoardChangeListener listener : listeners) {
-//            listener.onBoardChange(x, y, player);
-//        }
-//    }
+    }
+    @Override
+    public  void notifyListeners(int x, int y, int player) {
+        for (BoardChangeListener listener : listeners) {
+            listener.onBoardChange(x, y, player);
+        }
+    }
+
+    @Override
+    public void addListener(BoardChangeListener listener) {
+        listeners.add(listener);
+    }
 }

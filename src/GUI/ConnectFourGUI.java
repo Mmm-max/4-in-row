@@ -1,8 +1,10 @@
 package GUI;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -52,8 +54,9 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
         primaryStage.show();
     }
     public void drawMove(int x, int y, int player) {
+        System.out.println("Draw move: x: " + x + " y: " + y + " player: " + player);
         Circle circle = new Circle(30);
-        circle.setFill(player == 0 ? Color.RED : Color.YELLOW);
+        circle.setFill(player == 1 ? Color.RED : Color.YELLOW);
         StackPane cell = (StackPane) gridPane.getChildren().get(y * COLUMNS + x);
         cell.getChildren().add(circle);
     }
@@ -73,7 +76,7 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
     
     @Override
     public void onBoardChange(int x, int y, int player) {
-        drawMove(x, y, player);
+        Platform.runLater(() ->drawMove(x, y, player));
     }
 
     @Override
@@ -100,5 +103,27 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
 
     public String getName() {
         return name;
+    }
+
+    public void WictoryWindow(String name) {
+        Stage newStage = new Stage();
+
+        StackPane root = new StackPane();
+        root.getChildren().add(new Label("Победил " + name));
+        Scene scene = new Scene(root, 200, 100);
+
+        newStage.setScene(scene);
+        newStage.show();
+    }
+
+    public void DrawWindow() {
+        Stage newStage = new Stage();
+
+        StackPane root = new StackPane();
+        root.getChildren().add(new Label("Ничья"));
+        Scene scene = new Scene(root, 200, 100);
+
+        newStage.setScene(scene);
+        newStage.show();
     }
 }

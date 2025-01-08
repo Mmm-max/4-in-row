@@ -1,5 +1,6 @@
 package player;
 import game.Board;
+import game.BoardChangeListener;
 import game.CellClickListener;
 
 import java.util.Scanner;
@@ -25,6 +26,7 @@ public class HumanPlayer extends Player implements CellClickListener {
     }
 
     public int getMoveByGui(Board board) {
+        move = -1;
         while (move == -1) {
             try {
                 Thread.sleep(100);
@@ -58,6 +60,8 @@ public class HumanPlayer extends Player implements CellClickListener {
     }
 
     @Override
-    public void notifyListeners(int x, int y) {}
+    public void notifyListeners(int x, int y, int player) {}
 
+    @Override
+    public void addListener(BoardChangeListener board) {}
 }
