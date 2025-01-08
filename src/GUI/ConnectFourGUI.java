@@ -105,7 +105,7 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
         return name;
     }
 
-    public void WictoryWindow(String name) {
+    public void victoryWindow(String name) {
         Stage newStage = new Stage();
 
         StackPane root = new StackPane();
@@ -116,7 +116,7 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
         newStage.show();
     }
 
-    public void DrawWindow() {
+    public void drawWindow() {
         Stage newStage = new Stage();
 
         StackPane root = new StackPane();

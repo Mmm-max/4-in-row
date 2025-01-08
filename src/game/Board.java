@@ -2,7 +2,7 @@ package game;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Board implements CellClickListener{
+public class Board implements CellClickListener, Cloneable{
     int[][] board;
     int length;
     int width;
@@ -170,5 +170,17 @@ public class Board implements CellClickListener{
     @Override
     public void addListener(BoardChangeListener listener) {
         listeners.add(listener);
+    }
+
+    // cloning
+    @Override
+    public Board clone() {
+        Board clone = new Board(length, width);
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < length; j++) {
+                clone.board[i][j] = board[i][j];
+            }
+        }
+        return clone;
     }
 }

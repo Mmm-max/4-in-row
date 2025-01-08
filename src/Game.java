@@ -45,11 +45,11 @@ public class Game {
             movesCnt++;
             if (board.isWinningMove(move, currentPlayer.getPlayerNumber()) == 1) {
                 System.out.println(currentPlayer.getName() + " wins!");
-                Platform.runLater(() -> gui.WictoryWindow(currentPlayer.getName()));
+                Platform.runLater(() -> gui.victoryWindow(currentPlayer.getName()));
                 break;
             } else if (board.isFull(movesCnt) == 1) {
                 System.out.println("It's a draw!");
-                Platform.runLater(() -> gui.DrawWindow());
+                Platform.runLater(() -> gui.drawWindow());
                 break;
             }
             switchPlayer();
