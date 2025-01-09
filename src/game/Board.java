@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Board implements CellClickListener, Cloneable{
     int[][] board;
-    int length;
+    int height;
     int width;
     int player = 1;
     List<BoardChangeListener> listeners = new ArrayList<>();
@@ -32,17 +32,17 @@ public class Board implements CellClickListener, Cloneable{
 
     public Board(int x, int y) {
         board = new int[y][x];
-        length = x;
+        height = x;
         width = y;
     }
 
     public Board() {
         board = new int[8][8];
-        length = 7;
+        height = 7;
         width = 6;
     }
     public int getLength() {
-        return length;
+        return height;
     }
 
     public int getWidth() {
@@ -50,7 +50,7 @@ public class Board implements CellClickListener, Cloneable{
     }
 
     public int isFull(int moves) {
-        if (moves == length * width) {
+        if (moves == height * width) {
             return 1;
         }
         return 0;
@@ -58,7 +58,7 @@ public class Board implements CellClickListener, Cloneable{
 
     public void printBoard() {
         for (int y = 0; y < width; y++) {
-            for (int x = 0; x < length; x++) {
+            for (int x = 0; x < height; x++) {
                 System.out.print(board[y][x] + " ");
             }
             System.out.println();
@@ -70,7 +70,7 @@ public class Board implements CellClickListener, Cloneable{
     }
 
     public int isLegalMove(int x) {
-        if (x < 0 || x >= length) {
+        if (x < 0 || x >= height) {
             return 0;
         }
 
@@ -104,53 +104,40 @@ public class Board implements CellClickListener, Cloneable{
     public int isWinningMove(int x, int player) {
         int y = get_y_coord(x) + 1;
 //        System.out.println("isWinning y: " + y);
-
-        // Check horizontal
-        for (int i = max(0, x - 3); i < length - 3; i++) {
-            if (board[y][i] == player && board[y][i + 1] ==
-                    player && board[y][i + 2] == player && board[y][i + 3] == player) {
-                System.out.println("1: " + board[y][i] + " 2: " + board[y][i + 1] + " 3: "
-                        + board[y][i + 2] + " 1: " + board[y][i + 3]);
-                System.out.println("y: " + y + " x: " + x + " player: " + player);
-                System.out.println("first test: " + (board[y][x] == player));
-                return 1;
-            }
-        }
-        // Check vertical
-        for (int i = max(0, y - 3); i < width - 3; i++) {
-            if (board[i][x] == player && board[i + 1][x] ==
-                    player && board[i + 2][x] == player && board[i + 3][x] == player) {
-                return 1;
-            }
-        }
-
-        // Check diagonal
-
-        // Check diagonal left
-        for (int i = 0; i <= 3; i++) {
-            try {
-                if (board[y - i][x - i] == player && board[y - i - 1][x - i - 1] ==
-                        player && board[y - i - 2][x - i - 2] == player && board[y - i - 3][x - i - 3] == player) {
-                    return 1;
-                }
-            } catch (ArrayIndexOutOfBoundsException e) {
-                continue;
-            }
-        }
-
-        // Check diagonal right
-        for (int i = 0; i <= 3; i++) {
-            try {
-                if (board[y - i][x + i] == player && board[y - i + 1][x + i - 1] ==
-                        player && board[y - i + 2][x + i - 2] == player && board[y - i + 3][x + i - 3] == player) {
-                    return 1;
-                }
-            } catch (ArrayIndexOutOfBoundsException e) {
-                continue;
-            }
-        }
+        if (checkLine(x, y, 1, 0, player, width)) return 1;    // Горизонталь
+        if (checkLine(x, y, 0, 1, player, height)) return 1;   // Вертикаль
+        if (checkLine(x, y, 1, 1, player, Math.min(width, height))) return 1;  // Правая диагональ
+        if (checkLine(x, y, -1, 1, player, Math.min(width, height))) return 1; // Левая диагональ
         return 0;
     }
+
+    private boolean checkLine(int x, int y, int dx, int dy, int player, int maxCheck) {
+        int count = 0;
+
+        // Проверяем линию в обоих направлениях от последней поставленной фишки
+        for (int i = -3; i <= 3; i++) {
+            int currentX = x + i * dx;
+            int currentY = y + i * dy;
+
+            // Проверка границ массива
+            if (currentX < 0 || currentX >= board[0].length || currentY < 0 || currentY >= board.length) {
+                continue; // Пропускаем эту итерацию, если вышли за границы
+            }
+
+            if (board[currentY][currentX] == player) {
+                count++;
+                if (count == 4) {
+                    return true; // Найдена линия из 4 фишек
+                }
+            } else {
+                count = 0; // Сбрасываем счетчик, если встретили фишку другого игрока или пустое место
+            }
+        }
+
+        return false; // Линия из 4 фишек не найдена
+    }
+
+
 
     @Override
     public void onCellClick(int column) {
@@ -175,9 +162,9 @@ public class Board implements CellClickListener, Cloneable{
     // cloning
     @Override
     public Board clone() {
-        Board clone = new Board(length, width);
+        Board clone = new Board(height, width);
         for (int i = 0; i < width; i++) {
-            for (int j = 0; j < length; j++) {
+            for (int j = 0; j < height; j++) {
                 clone.board[i][j] = board[i][j];
             }
         }

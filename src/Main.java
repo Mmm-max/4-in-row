@@ -7,5 +7,6 @@ public class Main {
         boardTest.testVerticalWin();
         boardTest.testDiagonalLeftWin();
         boardTest.testDiagonalRightWin();
+        boardTest.testDiagonalLeftWin2();
     }
 }

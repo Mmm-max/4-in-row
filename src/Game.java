@@ -57,6 +57,7 @@ public class Game {
     }
 
     public static void main(String[] args) {
+        // tests
         // Запуск GUI в отдельном потоке
         CountDownLatch latch = new CountDownLatch(1);
         ConnectFourGUI gui = new ConnectFourGUI();

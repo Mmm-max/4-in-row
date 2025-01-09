@@ -69,6 +69,30 @@ public class BoardTest {
     }
 
     @Test
+    public void testDiagonalLeftWin2() {
+        System.out.println("testDiagonalLeftWin2");
+        Board board = new Board(7, 6);
+        board.makeMove(5, 1);
+        board.makeMove(4, 2);
+
+        board.makeMove(4, 1);
+        board.makeMove(3, 2);
+
+        board.makeMove(3, 1);
+        board.makeMove(2, 2);
+
+        board.makeMove(3, 1);
+        board.makeMove(2, 2);
+
+        board.makeMove(2, 1);
+        board.makeMove(0, 2);
+
+        board.makeMove(2, 1);
+        board.printBoard();
+        assertEquals(1, board.isWinningMove(2, 1));
+    }
+
+    @Test
     public void testNoWin() {
         System.out.println("testNoWin");
         Board board = new Board(7, 6);
