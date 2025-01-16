@@ -7,8 +7,8 @@ public class Tree {
     private Node root;
 
 
-    public Tree() {
-        root = new Node();
+    public Tree(Node node) {
+        root = node;
     }
 
     public Node getRoot() {
@@ -19,16 +19,16 @@ public class Tree {
         this.root = root;
     }
 
-    public void addChild(@NotNull Node node) {
-        node.children.add(node);
+    public void addChild(@NotNull Node parent, int index, Node child) {
+        parent.children[index] = child;
     }
 
-    public void removeChild(@NotNull Node node) {
-        node.children.remove(node);
+    public void removeChild(@NotNull Node node, int index) {
+        node.children[index] = null;
     }
 
-    public Node getChild(@NotNull Node node) {
-        return node.children.get(0);
+    public Node getChild(@NotNull Node parent, int index) {
+        return parent.children[index];
     }
 
     public int getValue(@NotNull Node node) {
