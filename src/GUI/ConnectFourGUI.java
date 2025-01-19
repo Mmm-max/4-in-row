@@ -17,13 +17,15 @@ import game.*;
 import java.util.List;
 import java.util.ArrayList;
 
+
+
 public class ConnectFourGUI extends javafx.application.Application implements BoardChangeListener {
     private static final int ROWS = 6;
     private static final int COLUMNS = 7;
     private GridPane gridPane;
-    private int x = 0;
-    private int y = 0;
-    private int player = 0;
+//    private int x = 0;
+//    private int y = 0;
+//    private int player = 0;
     private List<CellClickListener> listeners = new ArrayList<>();
     private String name;
 
@@ -69,9 +71,6 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
     private void handleMouseClick(int col) {
         System.out.println("Column " + col + " clicked");
         notifyListeners(col);
-    }
-    public static void main(String[] args) {
-        launch(args);
     }
     
     @Override
@@ -125,5 +124,9 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
 
         newStage.setScene(scene);
         newStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

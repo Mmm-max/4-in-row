@@ -1,5 +1,6 @@
+package game;
+
 import GUI.ConnectFourGUI;
-import game.*;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import player.*;
@@ -7,7 +8,7 @@ import player.*;
 import java.util.concurrent.CountDownLatch;
 
 
-public class Game {
+public class LocalGame {
     private Board board;
     private ConnectFourGUI gui;
     private Player player1;
@@ -16,8 +17,8 @@ public class Game {
     private int movesCnt = 0;
 
     // two players
-    public Game(ConnectFourGUI gui) {
-        System.out.println("create game");
+    public LocalGame(ConnectFourGUI gui) {
+        System.out.println("create local game");
         board = new Board();
         this.gui = gui;
         board.addListener(gui);
@@ -34,6 +35,10 @@ public class Game {
         } else {
             currentPlayer = player1;
         }
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public void start() {
@@ -79,7 +84,7 @@ public class Game {
         // Запуск игровой логики в основном потоке
         new Thread(() -> {
             System.out.println("start game");
-            Game game = new Game(gui);
+            LocalGame game = new LocalGame(gui);
             game.start();
         }).start();
     }
