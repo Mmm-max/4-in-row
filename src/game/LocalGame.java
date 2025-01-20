@@ -8,13 +8,15 @@ import player.*;
 import java.util.concurrent.CountDownLatch;
 
 
-public class LocalGame {
+public class LocalGame implements GameRestartListener {
     private Board board;
     private ConnectFourGUI gui;
     private Player player1;
     private Player player2;
     private Player currentPlayer;
     private int movesCnt = 0;
+    private boolean isRunning = true;
+    private Thread gameThread;
 
     // two players
     public LocalGame(ConnectFourGUI gui) {
@@ -26,6 +28,15 @@ public class LocalGame {
         player2 = new HumanPlayer("Player 2", 2);
         gui.addListener((HumanPlayer) player1);
         gui.addListener((HumanPlayer) player2);
+        gui.addRestartListeners(this);
+        currentPlayer = player1;
+    }
+
+    @Override
+    public void gameRestart() {
+        System.out.println("restart game");
+        board.clear();
+        Platform.runLater(() -> gui.clear());
         currentPlayer = player1;
     }
 
@@ -41,21 +52,35 @@ public class LocalGame {
         return board;
     }
 
+    @Override
+    public void exit() {
+        System.out.println("exit game");
+        isRunning = false;
+        if (gameThread != null) {
+            gameThread.interrupt();
+        }
+    }
+
     public void start() {
-        while (true) {
+        gameThread = Thread.currentThread();
+        while (isRunning) {
             System.out.println(currentPlayer.getName() + "'s turn");
             int move = ((HumanPlayer) currentPlayer).getMoveByGui(board);
+            if (move == -1) {
+                break;
+            }
             board.makeMove(move, currentPlayer.getPlayerNumber());
             board.printBoard();
             movesCnt++;
             if (board.isWinningMove(move, currentPlayer.getPlayerNumber()) == 1) {
                 System.out.println(currentPlayer.getName() + " wins!");
                 Platform.runLater(() -> gui.victoryWindow(currentPlayer.getName()));
-                break;
+
+//                break;
             } else if (board.isFull(movesCnt) == 1) {
                 System.out.println("It's a draw!");
                 Platform.runLater(() -> gui.drawWindow());
-                break;
+//                break;
             }
             switchPlayer();
         }

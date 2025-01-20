@@ -137,6 +137,14 @@ public class Board implements CellClickListener, Cloneable{
         return false; // Линия из 4 фишек не найдена
     }
 
+    public void clear() {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                board[i][j] = 0;
+            }
+        }
+    }
+
 
 
     @Override

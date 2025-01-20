@@ -21,9 +21,10 @@ public class MainMenu extends Application {
         Button localGameButtom =  new Button("Local game");
         Button playWithAIButton = new Button("Play with AI");
         Button newtworkPlayButton = new Button("Network Play");
+        Button exitButton = new Button("Exit");
 
         localGameButtom.setOnAction(e -> {
-            startLocalGame();
+            startLocalGame(primaryStage);
             System.out.println("Local game");
         });
         playWithAIButton.setOnAction(e -> {
@@ -35,21 +36,26 @@ public class MainMenu extends Application {
             System.out.println("netwrok game");
         });
 
+        exitButton.setOnAction(e -> {
+            primaryStage.close();
+        });
+
 
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(localGameButtom, playWithAIButton, newtworkPlayButton);
+        layout.getChildren().addAll(localGameButtom, playWithAIButton, newtworkPlayButton, exitButton);
 
         Scene scene = new Scene(layout, 300, 250);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    private void startLocalGame() {
+    private void startLocalGame(Stage primaryStage) {
         System.out.println("Local game");
         ConnectFourGUI gui = new ConnectFourGUI();
         gui.start(new Stage());
+        primaryStage.close();
 
         new Thread(() -> {
             System.out.println("start local game logic");

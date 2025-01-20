@@ -4,9 +4,12 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import javafx.scene.paint.Color;
@@ -28,6 +31,7 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
 //    private int player = 0;
     private List<CellClickListener> listeners = new ArrayList<>();
     private String name;
+    private List<GameRestartListener> restartListeners = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) {
@@ -107,12 +111,65 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
     public void victoryWindow(String name) {
         Stage newStage = new Stage();
 
+        Button restartButton = new Button("Restart");
+        Button exitButton = new Button("Exit");
+
+        restartButton.setOnAction(e -> {
+            newStage.close();
+            restart();
+        });
+
+        exitButton.setOnAction(e -> {
+            exit();
+        });
+
         StackPane root = new StackPane();
         root.getChildren().add(new Label("Победил " + name));
-        Scene scene = new Scene(root, 200, 100);
+
+        HBox buttonLayout = new HBox(10);
+        buttonLayout.setAlignment(Pos.BOTTOM_CENTER);
+        buttonLayout.setPadding(new Insets(20, 20, 20, 20));
+        buttonLayout.getChildren().addAll(restartButton, exitButton);
+
+        VBox layout = new VBox(10);
+        layout.setAlignment(Pos.CENTER);
+        layout.getChildren().addAll(root, buttonLayout);
+
+        Scene scene = new Scene(layout, 200, 100);
 
         newStage.setScene(scene);
         newStage.show();
+    }
+
+    private void restart() {
+        notifyRestartListeners();
+
+    }
+
+    private void exit() {
+        for (GameRestartListener listener : restartListeners) {
+            listener.exit();
+        }
+        Platform.exit();
+    }
+
+    public void addRestartListeners(GameRestartListener listener) {
+        restartListeners.add(listener);
+    }
+
+    private void notifyRestartListeners() {
+        for (GameRestartListener listener : restartListeners) {
+            listener.gameRestart();
+        }
+    }
+
+    public void clear() {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
+                StackPane cell = (StackPane) gridPane.getChildren().get(i * COLUMNS + j);
+                cell.getChildren().clear();
+            }
+        }
     }
 
     public void drawWindow() {
@@ -129,4 +186,5 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
     public static void main(String[] args) {
         launch(args);
     }
+
 }

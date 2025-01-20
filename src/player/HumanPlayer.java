@@ -30,6 +30,11 @@ public class HumanPlayer extends Player implements CellClickListener {
         while (move == -1) {
             try {
                 Thread.sleep(100);
+                System.out.println("Waiting for move");
+                if (Thread.interrupted()) {
+                    System.out.println("Thread interrupted");
+                    return -1;
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
