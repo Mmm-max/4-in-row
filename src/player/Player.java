@@ -5,6 +5,7 @@ import GUI.*;
 public abstract class Player {
     private String name;
     private int playerNumber;
+    private int winsCnt = 0;
     private Board boardListener;
     private ConnectFourGUI GUIListener;
 

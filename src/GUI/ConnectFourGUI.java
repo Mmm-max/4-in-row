@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -31,8 +32,20 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
 //    private int player = 0;
     private List<CellClickListener> listeners = new ArrayList<>();
     private String name;
+    private String player1 = "Player 1";
+    private String player2 = "Player 2";
     private List<GameRestartListener> restartListeners = new ArrayList<>();
 
+    ConnectFourGUI(String player1, String player2) {
+        this.name = "Connect four";
+        this.player1 = !player1.isEmpty() ? player1 : "Player 1";
+        this.player2 = !player2.isEmpty() ? player2 : "Player 2";
+        if (player1 == player2) {
+            System.out.println("Ошибка, у обоих одинаковые имена");
+            player1 = "Player 1";
+            player2 = "Player 2";
+        }
+    }
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Connect Four");
@@ -55,7 +68,32 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
             }
         }
 
-        Scene scene = new Scene(gridPane);
+        // player 1
+        Label player1Label = new Label(player1);
+//        player1Label.setAlignment(Pos.TOP_CENTER);
+        player1Label.setStyle("-fx-font-size: 20px");
+        Label player1Count = new Label("0");
+        player1Count.setStyle("-fx-font-size: 20px");
+        VBox player1Layout = new VBox(10);
+        player1Layout.setAlignment(Pos.TOP_CENTER);
+        player1Layout.getChildren().addAll(player1Label, player1Count);
+
+        // player 2
+        Label player2Label = new Label(player2);
+//        player2Label.setAlignment(Pos.TOP_CENTER);
+        player2Label.setStyle("-fx-font-size: 20px");
+        Label player2Count = new Label("0");
+        player2Count.setStyle("-fx-font-size: 20px");
+        VBox player2Layout = new VBox(10);
+        player2Layout.setAlignment(Pos.TOP_CENTER);
+        player2Layout.getChildren().addAll(player2Label, player2Count);
+
+        HBox layout = new HBox(10);
+        layout.setAlignment(Pos.CENTER);
+        layout.setPadding(new Insets(20, 20, 20, 20));
+        layout.getChildren().addAll(player1Layout, gridPane, player2Layout);
+
+        Scene scene = new Scene(layout);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

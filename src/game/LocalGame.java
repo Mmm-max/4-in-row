@@ -97,31 +97,31 @@ public class LocalGame implements GameRestartListener {
         }
     }
 
-    public static void main(String[] args) {
-        // tests
-        // Запуск GUI в отдельном потоке
-        CountDownLatch latch = new CountDownLatch(1);
-        ConnectFourGUI gui = new ConnectFourGUI();
-        Platform.startup(() -> {
-            try {
-                Stage primaryStage = new Stage();
-                gui.start(primaryStage);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            latch.countDown();
-        });
-
-        try {
-            Thread.sleep(500); // Пауза в полсекунды
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        // Запуск игровой логики в основном потоке
-        new Thread(() -> {
-            System.out.println("start game");
-            LocalGame game = new LocalGame(gui);
-            game.start();
-        }).start();
-    }
+//    public static void main(String[] args) {
+//        // tests
+//        // Запуск GUI в отдельном потоке
+//        CountDownLatch latch = new CountDownLatch(1);
+//        ConnectFourGUI gui = new ConnectFourGUI();
+//        Platform.startup(() -> {
+//            try {
+//                Stage primaryStage = new Stage();
+//                gui.start(primaryStage);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            latch.countDown();
+//        });
+//
+//        try {
+//            Thread.sleep(500); // Пауза в полсекунды
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        // Запуск игровой логики в основном потоке
+//        new Thread(() -> {
+//            System.out.println("start game");
+//            LocalGame game = new LocalGame(gui);
+//            game.start();
+//        }).start();
+//    }
 }

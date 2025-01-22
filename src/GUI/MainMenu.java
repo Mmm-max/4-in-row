@@ -50,7 +50,7 @@ public class MainMenu extends Application implements ChoosePlayersListener {
 
     @Override
     public void onPlayersChosen(String player1, String player2) {
-        ConnectFourGUI gui = new ConnectFourGUI();
+        ConnectFourGUI gui = new ConnectFourGUI(player1, player2);
         gui.start(new Stage());
 //        primaryStage.close();
 
