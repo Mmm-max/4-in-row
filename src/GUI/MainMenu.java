@@ -2,8 +2,6 @@ package GUI;
 
 import game.LocalGame;
 import javafx.application.Application;
-import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.concurrent.CountDownLatch;
 
 public class MainMenu extends Application implements ChoosePlayersListener {
     @Override
