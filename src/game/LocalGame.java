@@ -11,9 +11,9 @@ import java.util.concurrent.CountDownLatch;
 public class LocalGame implements GameRestartListener {
     private Board board;
     private ConnectFourGUI gui;
-    private Player player1;
-    private Player player2;
-    private Player currentPlayer;
+    private HumanPlayer player1;
+    private HumanPlayer player2;
+    private HumanPlayer currentPlayer;
     private int movesCnt = 0;
     private boolean isRunning = true;
     private Thread gameThread;
@@ -30,6 +30,12 @@ public class LocalGame implements GameRestartListener {
         gui.addListener((HumanPlayer) player2);
         gui.addRestartListeners(this);
         currentPlayer = player1;
+    }
+
+    public LocalGame(ConnectFourGUI gui, String player1Name, String player2Name) {
+        this(gui);
+        this.player1.setName(player1Name);
+        this.player2.setName(player2Name);
     }
 
     @Override
@@ -61,8 +67,13 @@ public class LocalGame implements GameRestartListener {
         }
     }
 
+    private void createPlayers(String name1, String name2) {
+        player1.setName(name1);
+        player2.setName(name2);
+    }
     public void start() {
         gameThread = Thread.currentThread();
+
         while (isRunning) {
             System.out.println(currentPlayer.getName() + "'s turn");
             int move = ((HumanPlayer) currentPlayer).getMoveByGui(board);

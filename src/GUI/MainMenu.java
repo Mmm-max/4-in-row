@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 import java.util.concurrent.CountDownLatch;
 
-public class MainMenu extends Application {
+public class MainMenu extends Application implements ChoosePlayersListener {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Main menu");
@@ -51,18 +51,25 @@ public class MainMenu extends Application {
         primaryStage.show();
     }
 
-    private void startLocalGame(Stage primaryStage) {
-        System.out.println("Local game");
+    @Override
+    public void onPlayersChosen(String player1, String player2) {
         ConnectFourGUI gui = new ConnectFourGUI();
         gui.start(new Stage());
-        primaryStage.close();
+//        primaryStage.close();
 
         new Thread(() -> {
             System.out.println("start local game logic");
-            LocalGame localGame = new LocalGame(gui);
+            LocalGame localGame = new LocalGame(gui, player1, player2);
             localGame.start();
         }).start();
+    }
 
+    private void startLocalGame(Stage primaryStage) {
+        System.out.println("Local game");
+        ChoosePlayers choosePlayers = new ChoosePlayers();
+        choosePlayers.addListener(this);
+        choosePlayers.start(new Stage());
+        primaryStage.close();
     }
 
     public static void main(String[] args) {

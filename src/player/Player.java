@@ -37,4 +37,9 @@ public abstract class Player {
     protected abstract void NotifiedGuiListener();
     protected abstract void GetCellByGui();
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
 }
