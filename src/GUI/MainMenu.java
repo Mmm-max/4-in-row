@@ -25,8 +25,8 @@ public class MainMenu extends Application implements ChoosePlayersListener {
             System.out.println("Local game");
         });
         playWithAIButton.setOnAction(e -> {
-            // realisation of AIplay
-            System.out.println("AIPlay");
+            System.out.println("AI play");
+            startAIGame(primaryStage);
         });
         newtworkPlayButton.setOnAction(e -> {
             // realisation of network game
@@ -66,6 +66,13 @@ public class MainMenu extends Application implements ChoosePlayersListener {
         ChoosePlayers choosePlayers = new ChoosePlayers();
         choosePlayers.addListener(this);
         choosePlayers.start(new Stage());
+        primaryStage.close();
+    }
+
+    private void startAIGame(Stage primaryStage) {
+        System.out.println("AI game");
+        ChooseAIDifficultLevel chooseAIDifficultLevel = new ChooseAIDifficultLevel();
+        chooseAIDifficultLevel.start(new Stage());
         primaryStage.close();
     }
 
