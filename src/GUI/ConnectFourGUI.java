@@ -36,15 +36,13 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
     private String player2 = "Player 2";
     private List<GameRestartListener> restartListeners = new ArrayList<>();
 
+    private Label player1Count;
+    private Label player2Count;
+
     ConnectFourGUI(String player1, String player2) {
         this.name = "Connect four";
-        this.player1 = !player1.isEmpty() ? player1 : "Player 1";
-        this.player2 = !player2.isEmpty() ? player2 : "Player 2";
-        if (player1 == player2) {
-            System.out.println("Ошибка, у обоих одинаковые имена");
-            player1 = "Player 1";
-            player2 = "Player 2";
-        }
+        this.player1 = player1;
+        this.player2 = player2;
     }
     @Override
     public void start(Stage primaryStage) {
@@ -72,7 +70,7 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
         Label player1Label = new Label(player1);
 //        player1Label.setAlignment(Pos.TOP_CENTER);
         player1Label.setStyle("-fx-font-size: 20px");
-        Label player1Count = new Label("0");
+        player1Count = new Label("0");
         player1Count.setStyle("-fx-font-size: 20px");
         VBox player1Layout = new VBox(10);
         player1Layout.setAlignment(Pos.TOP_CENTER);
@@ -82,7 +80,7 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
         Label player2Label = new Label(player2);
 //        player2Label.setAlignment(Pos.TOP_CENTER);
         player2Label.setStyle("-fx-font-size: 20px");
-        Label player2Count = new Label("0");
+        player2Count = new Label("0");
         player2Count.setStyle("-fx-font-size: 20px");
         VBox player2Layout = new VBox(10);
         player2Layout.setAlignment(Pos.TOP_CENTER);
@@ -96,6 +94,15 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
         Scene scene = new Scene(layout);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    public void updatePlayer1Count(Integer wins) {
+        System.out.println("updatePlayer1Count: " + wins);
+        player1Count.setText(wins.toString());
+    }
+
+    public void updatePlayer2Count(Integer wins) {
+        player2Count.setText(wins.toString());
     }
     public void drawMove(int x, int y, int player) {
         System.out.println("Draw move: x: " + x + " y: " + y + " player: " + player);

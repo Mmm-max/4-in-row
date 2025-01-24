@@ -50,13 +50,23 @@ public class MainMenu extends Application implements ChoosePlayersListener {
 
     @Override
     public void onPlayersChosen(String player1, String player2) {
+        // проверка, чтобы не было пустых строк или повторяющихся имен
+        player1 = !player1.isEmpty() ? player1 : "Player 1";
+        player2 = !player2.isEmpty() ? player2 : "Player 2";
+        if (player1 == player2) {
+            System.out.println("Ошибка, у обоих одинаковые имена");
+            player1 = "Player 1";
+            player2 = "Player 2";
+        }
+        String player1Name = player1;
+        String player2Name = player2;
         ConnectFourGUI gui = new ConnectFourGUI(player1, player2);
         gui.start(new Stage());
 //        primaryStage.close();
 
         new Thread(() -> {
             System.out.println("start local game logic");
-            LocalGame localGame = new LocalGame(gui, player1, player2);
+            LocalGame localGame = new LocalGame(gui, player1Name, player2Name);
             localGame.start();
         }).start();
     }

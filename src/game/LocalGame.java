@@ -43,6 +43,9 @@ public class LocalGame implements GameRestartListener {
         System.out.println("restart game");
         board.clear();
         Platform.runLater(() -> gui.clear());
+        System.out.println("restart game player1 wins: " + player1.getWinsCnt() + " player2 wins: " + player2.getWinsCnt());
+        gui.updatePlayer1Count(player1.getWinsCnt());
+        gui.updatePlayer2Count(player2.getWinsCnt());
         currentPlayer = player1;
     }
 
@@ -85,7 +88,9 @@ public class LocalGame implements GameRestartListener {
             movesCnt++;
             if (board.isWinningMove(move, currentPlayer.getPlayerNumber()) == 1) {
                 System.out.println(currentPlayer.getName() + " wins!");
-                Platform.runLater(() -> gui.victoryWindow(currentPlayer.getName()));
+                String winner = currentPlayer.getName();
+                currentPlayer.incrementWinsCnt();
+                Platform.runLater(() -> gui.victoryWindow(winner));
 
 //                break;
             } else if (board.isFull(movesCnt) == 1) {

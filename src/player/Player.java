@@ -12,6 +12,7 @@ public abstract class Player {
     public Player(String name, int playerNumber) {
         this.name = name;
         this.playerNumber = playerNumber;
+        this.winsCnt = 0;
     }
 
     public String getName() {
@@ -20,6 +21,18 @@ public abstract class Player {
 
     public int getPlayerNumber() {
         return playerNumber;
+    }
+
+    public int getWinsCnt() {
+        return winsCnt;
+    }
+
+    public void incrementWinsCnt() {
+        winsCnt++;
+    }
+
+    public void setWinsCnt(int winsCnt) {
+        this.winsCnt = winsCnt;
     }
 
     public abstract int getMoveByConsole(Board board);
