@@ -1,0 +1,20 @@
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+JAVA_HOME=$(/usr/libexec/java_home)
+
+# Находим JavaFX
+JAVAFX_PATH="/Library/Java/Extensions/javafx-sdk-23.0.1/lib"
+
+if [ ! -d "$JAVAFX_PATH" ]; then
+    echo "JavaFX SDK не найден!"
+    exit 1
+fi
+
+# Запускаем приложение
+"$JAVA_HOME/bin/java" \
+  --module-path "$JAVAFX_PATH" \
+  --add-modules javafx.controls,javafx.fxml \
+  -Dprism.order=sw \
+  -Dprism.verbose=true \
+  -Djava.awt.headless=false \
+  -jar "$DIR/../Java/4_in_row_jar.jar"

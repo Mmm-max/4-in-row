@@ -1,0 +1,54 @@
+# GitHub Actions для автоматической сборки на Windows
+
+name: Build Windows EXE
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+    
+    - name: Download JavaFX
+      run: |
+        curl -L -o javafx.zip https://download2.gluonhq.com/openjfx/23.0.1/openjfx-23.0.1_windows-x64_bin-sdk.zip
+        Expand-Archive javafx.zip -DestinationPath .
+        
+    - name: Build JAR
+      run: |
+        # Тут нужно будет добавить команды сборки JAR
+        # Например, через Maven или Gradle
+        
+    - name: Create Windows EXE
+      run: |
+        jpackage --input out/artifacts/4_in_row_jar `
+                 --name Connect4 `
+                 --main-jar 4_in_row_jar.jar `
+                 --main-class Main `
+                 --type exe `
+                 --dest dist `
+                 --module-path "openjfx-23.0.1/lib" `
+                 --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics `
+                 --java-options "-Dprism.order=sw" `
+                 --java-options "-Djava.awt.headless=false" `
+                 --app-version "1.0" `
+                 --description "Игра 4 в ряд с ИИ" `
+                 --vendor "Eugen Solopov"
+                 
+    - name: Upload EXE
+      uses: actions/upload-artifact@v4
+      with:
+        name: Connect4-Windows-EXE
+        path: dist/Connect4-*.exe

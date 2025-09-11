@@ -1,0 +1,37 @@
+=== Connect4 Distribution v1.0 ===
+Дата создания: среда, 10 сентября 2025 г. 01:41:02 (MSK)
+Система сборки: Darwin Eugens-MacBook-Air.local 24.5.0 Darwin Kernel Version 24.5.0: Tue Apr 22 19:54:26 PDT 2025; root:xnu-11417.121.6~2/RELEASE_ARM64_T8112 arm64
+
+РАЗМЕРЫ:
+- macOS версия:  19M
+- Windows файлы:  10M  
+- Универсальная версия:  10M
+- Исходный код: 168K
+- Общий размер:  39M
+
+СОДЕРЖИМОЕ:
+macOS/
+  ├── Connect4.app (нативное приложение)
+  ├── Connect4-v1.0.dmg (установочный образ)
+  └── INSTALL.txt
+
+windows/
+  ├── jar/ (JAR файл)
+  ├── scripts/ (скрипты сборки)
+  └── README_WINDOWS.txt
+
+universal/
+  ├── 4_in_row_jar.jar
+  ├── run_macos_linux.sh
+  ├── run_windows.bat
+  └── INSTALL.txt
+
+source/
+  └── [полный исходный код]
+
+КОНТРОЛЬНЫЕ СУММЫ:
+SHA256:
+baf4df1d0fbf53620ff7bbd8080987127ddf4b461cfed54a4691bf6a1db5213e  /Users/eugensolopov/IdeaProjects/4-in-row/distribution/macOS/Connect4.app/Contents/Java/4_in_row_jar.jar
+35769b28b595f08bd885396af36479abaa399f27833057592ee33da761dd9dd3  /Users/eugensolopov/IdeaProjects/4-in-row/distribution/macOS/Connect4-v1.0.dmg
+baf4df1d0fbf53620ff7bbd8080987127ddf4b461cfed54a4691bf6a1db5213e  /Users/eugensolopov/IdeaProjects/4-in-row/distribution/universal/4_in_row_jar.jar
+baf4df1d0fbf53620ff7bbd8080987127ddf4b461cfed54a4691bf6a1db5213e  /Users/eugensolopov/IdeaProjects/4-in-row/distribution/windows/jar/4_in_row_jar.jar
