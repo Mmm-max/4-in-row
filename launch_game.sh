@@ -4,7 +4,7 @@
 # Работает на macOS, Linux и Windows (через Git Bash)
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-JAR_FILE="$PROJECT_DIR/out/artifacts/4_in_row_jar/4_in_row_jar.jar"
+JAR_FILE="$PROJECT_DIR/4_in_row_jar.jar"
 
 echo "🎮 Connect4 Game Launcher"
 echo "========================="
