@@ -110,6 +110,22 @@ public class Board implements CellClickListener, Cloneable{
         return 0;
     }
 
+    public boolean checkWin(int player) {
+        for (int y = 0; y < width; y++) {
+            for (int x = 0; x < height; x++) {
+                if (board[y][x] == player) {
+                    if (checkLine(x, y, 1, 0, player, width) ||      // Горизонталь
+                            checkLine(x, y, 0, 1, player, height) ||     // Вертикаль
+                            checkLine(x, y, 1, 1, player, Math.min(width, height)) ||   // Правая диагональ
+                            checkLine(x, y, -1, 1, player, Math.min(width, height))) {  // Левая диагональ
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     private boolean checkLine(int x, int y, int dx, int dy, int player, int maxCheck) {
         int count = 0;
 

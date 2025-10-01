@@ -2,15 +2,13 @@ package player;
 
 import game.Board;
 
-import java.util.ArrayList;
-
 public class Node {
-    Node[] children = new Node[6];
+    Node[] children = new Node[7];
     int value;
     Node parent;
     Board board;
     int move;
-    int player = 1;
+    int player;
 
     public Node(Board board) {
         this.board = board;
@@ -23,6 +21,13 @@ public class Node {
         this.value = 0;
     }
 
+    public Node(Board board, int player, int move) {
+        this.board = board;
+        this.player = player;
+        this.move = move;
+        this.value = 0;
+    }
+
     public void setValue(int value) {
         this.value = value;
     }
@@ -30,4 +35,47 @@ public class Node {
     public int getValue() {
         return value;
     }
+
+    public void addChild(Node child, int columnIndex) {
+        if (columnIndex >= 0 && columnIndex < children.length) {
+            children[columnIndex] = child;
+            child.parent = this;
+            child.move = columnIndex;
+        }
+    }
+
+    public Node[] getChildren() {
+        return children;
+    }
+
+    public boolean hasChildren() {
+        for (Node child: children) {
+            if (child != null) { return true;}
+        }
+        return false;
+    }
+
+    public Node getChild(int columnIndex) {
+        if (columnIndex >= 0 && columnIndex < children.length) {
+            return children[columnIndex];
+        }
+        return null;
+    }
+
+    public int getChildrenCount() {
+        int count = 0;
+        for (Node child: children) {
+            if (child != null) count++;
+        }
+        return count;
+    }
+
+    public boolean isLeaf() {
+        return !hasChildren();
+    }
+
+    public Board getBoard() {return board;}
+    public int getMove() {return move;}
+    public int getPlayer() {return player;}
+    public Node getParent() {return parent;}
 }
