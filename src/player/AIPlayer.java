@@ -31,7 +31,7 @@ public class AIPlayer extends Player {
             return 0;
         }
         for (int i = 0; i < 7; i++) {
-            if (board.isLegalMove(i) == 1) {
+            if (board.isLegalMove(i)) {
                 Board newBoard = board.clone();
                 newBoard.makeMove(i, playerNumber);
                 parent.children[i] = new Node(newBoard, playerNumber);

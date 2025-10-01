@@ -6,6 +6,7 @@ public class Board implements CellClickListener, Cloneable{
     int[][] board;
     int height;
     int width;
+    int moves = 0;
     int player = 1;
     List<BoardChangeListener> listeners = new ArrayList<>();
 
@@ -48,11 +49,11 @@ public class Board implements CellClickListener, Cloneable{
         return width;
     }
 
-    public int isFull(int moves) {
+    public boolean isFull() {
         if (moves == height * width) {
-            return 1;
+            return true;
         }
-        return 0;
+        return false;
     }
 
     public void printBoard() {
@@ -68,23 +69,24 @@ public class Board implements CellClickListener, Cloneable{
         return board[y][x];
     }
 
-    public int isLegalMove(int x) {
+    public boolean isLegalMove(int x) {
         if (x < 0 || x >= height) {
-            return 0;
+            return false;
         }
 
         if (getCell(x, 0) == 0) {
-            return 1;
+            return true;
         }
-        return 0;
+        return false;
     }
 
     public int makeMove(int x, int player) {
-        if (isLegalMove(x) == 0) {
+        if (!isLegalMove(x)) {
             return -1;
         }
         int y = get_y_coord(x);
         board[y][x] = player;
+        moves++;
         notifyListeners(x, y, player);
         return isWinningMove(x, player);
     }

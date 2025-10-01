@@ -93,7 +93,7 @@ public class LocalGame implements GameRestartListener {
                 Platform.runLater(() -> gui.victoryWindow(winner));
 
 //                break;
-            } else if (board.isFull(movesCnt) == 1) {
+            } else if (board.isFull()) {
                 System.out.println("It's a draw!");
                 Platform.runLater(() -> gui.drawWindow());
 //                break;
