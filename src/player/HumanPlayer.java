@@ -15,6 +15,10 @@ public class HumanPlayer extends Player implements CellClickListener {
     }
 
     @Override
+    public int getMove(Board board) {
+        return getMoveByGui(board);
+    }
+
     public int getMoveByConsole(Board board) {
         System.out.println("Enter your move:");
         int move = scanner.nextInt();

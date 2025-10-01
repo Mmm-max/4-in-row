@@ -9,7 +9,7 @@ public class Tree {
     private Node root;
     private int maxDepth;
 
-    private static int WINNING_SCORE = 100;
+    private static int WINNING_SCORE = 10000;
     private static int DRAW_SCORE = 0;
 
 
@@ -24,26 +24,6 @@ public class Tree {
     public void setRoot(Node root) {
         this.root = root;
     }
-
-//    public void addChild(@NotNull Node parent, int index, Node child) {
-//        parent.children[index] = child;
-//    }
-//
-//    public void removeChild(@NotNull Node node, int index) {
-//        node.children[index] = null;
-//    }
-//
-//    public Node getChild(@NotNull Node parent, int index) {
-//        return parent.children[index];
-//    }
-//
-//    public int getValue(@NotNull Node node) {
-//        return node.value;
-//    }
-//
-//    public void setValue(@NotNull Node node, int value) {
-//        node.value = value;
-//    }
 
     public Node buildTree(@NotNull Board board, int player) {
         return new Node(board, player);
@@ -128,9 +108,9 @@ public class Tree {
         int opponentPlayer = 3 - aiPlayer;
 
         if (board.checkWin(aiPlayer)) {
-            return 10000;
+            return WINNING_SCORE;
         } else if (board.checkWin(opponentPlayer)) {
-            return -10000;
+            return -WINNING_SCORE;
         }
         // Если игра не окончена, возвращаем нейтральную оценку
         // TODO: Добавить более сложную оценочную функцию

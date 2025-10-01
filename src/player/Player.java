@@ -35,7 +35,7 @@ public abstract class Player {
         this.winsCnt = winsCnt;
     }
 
-    public abstract int getMoveByConsole(Board board);
+    public abstract int getMove(Board board);
 
 //    public abstract int getMoveByGui(Board board);
 
