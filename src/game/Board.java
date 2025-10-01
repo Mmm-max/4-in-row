@@ -41,12 +41,12 @@ public class Board implements CellClickListener, Cloneable{
         height = 7;
         width = 6;
     }
-    public int getLength() {
-        return height;
+    public int getHeight() {
+        return width;
     }
 
     public int getWidth() {
-        return width;
+        return height;
     }
 
     public boolean isFull() {
@@ -57,6 +57,7 @@ public class Board implements CellClickListener, Cloneable{
     }
 
     public void printBoard() {
+        System.out.print("height: " + height + " width: " + width + "\n");
         for (int y = 0; y < width; y++) {
             for (int x = 0; x < height; x++) {
                 System.out.print(board[y][x] + " ");
