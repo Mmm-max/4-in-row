@@ -2,25 +2,12 @@ package game;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Board implements CellClickListener, Cloneable{
+public class Board implements CellClickListener, Cloneable {
     int[][] board;
-    int height;
-    int width;
+    int height; // количество строк
+    int width;  // количество столбцов
     int player = 1;
     List<BoardChangeListener> listeners = new ArrayList<>();
-
-
-    public static int min(int a, int b) {
-        return a < b ? a : b;
-    }
-
-    public static int max(int a, int b) {return a > b ? a : b;
-    }
-
-//    @Override
-//    public void addListener(BoardChangeListener listener) {
-//        listeners.add(listener);
-//    }
 
     public int getCurrPlayer() {
         return player;
@@ -29,18 +16,21 @@ public class Board implements CellClickListener, Cloneable{
         player = player == 1 ? 2 : 1;
     }
 
-    public Board(int x, int y) {
-        board = new int[y][x];
-        height = x;
-        width = y;
+    // Конструктор с параметрами: columns (width), rows (height)
+    public Board(int columns, int rows) {
+        board = new int[rows][columns]; // [строки][столбцы]
+        height = rows;
+        width = columns;
     }
 
+    // Конструктор по умолчанию: 7 столбцов, 6 строк (стандарт Connect Four)
     public Board() {
-        board = new int[8][8];
-        height = 7;
-        width = 6;
+        board = new int[6][7]; // 6 строк, 7 столбцов
+        height = 6;
+        width = 7;
     }
-    public int getLength() {
+
+    public int getHeight() {
         return height;
     }
 
@@ -56,8 +46,8 @@ public class Board implements CellClickListener, Cloneable{
     }
 
     public void printBoard() {
-        for (int y = 0; y < width; y++) {
-            for (int x = 0; x < height; x++) {
+        for (int y = 0; y < height; y++) { // строки
+            for (int x = 0; x < width; x++) { // столбцы
                 System.out.print(board[y][x] + " ");
             }
             System.out.println();
@@ -65,14 +55,13 @@ public class Board implements CellClickListener, Cloneable{
     }
 
     private int getCell(int x, int y) {
-        return board[y][x];
+        return board[y][x]; // board[строка][столбец]
     }
 
     public int isLegalMove(int x) {
-        if (x < 0 || x >= height) {
+        if (x < 0 || x >= width) {
             return 0;
         }
-
         if (getCell(x, 0) == 0) {
             return 1;
         }
@@ -90,7 +79,7 @@ public class Board implements CellClickListener, Cloneable{
     }
 
     private int get_y_coord(int x) {
-        for (int i = width - 1; i >= 0; i--) {
+        for (int i = height - 1; i >= 0; i--) { // ищем снизу вверх
             if (board[i][x] == 0) {
                 return i;
             }
@@ -98,26 +87,23 @@ public class Board implements CellClickListener, Cloneable{
         return -1;
     }
 
-
-
     public int isWinningMove(int x, int player) {
         int y = get_y_coord(x) + 1;
-//        System.out.println("isWinning y: " + y);
-        if (checkLine(x, y, 1, 0, player, width)) return 1;    // Горизонталь
-        if (checkLine(x, y, 0, 1, player, height)) return 1;   // Вертикаль
-        if (checkLine(x, y, 1, 1, player, Math.min(width, height))) return 1;  // Правая диагональ
-        if (checkLine(x, y, -1, 1, player, Math.min(width, height))) return 1; // Левая диагональ
+        if (checkLine(x, y, 1, 0, player)) return 1;    // Горизонталь
+        if (checkLine(x, y, 0, 1, player)) return 1;    // Вертикаль
+        if (checkLine(x, y, 1, 1, player)) return 1;    // Правая диагональ
+        if (checkLine(x, y, -1, 1, player)) return 1;   // Левая диагональ
         return 0;
     }
 
     public boolean checkWin(int player) {
-        for (int y = 0; y < width; y++) {
-            for (int x = 0; x < height; x++) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 if (board[y][x] == player) {
-                    if (checkLine(x, y, 1, 0, player, width) ||      // Горизонталь
-                            checkLine(x, y, 0, 1, player, height) ||     // Вертикаль
-                            checkLine(x, y, 1, 1, player, Math.min(width, height)) ||   // Правая диагональ
-                            checkLine(x, y, -1, 1, player, Math.min(width, height))) {  // Левая диагональ
+                    if (checkLine(x, y, 1, 0, player) ||      // Горизонталь
+                        checkLine(x, y, 0, 1, player) ||      // Вертикаль
+                        checkLine(x, y, 1, 1, player) ||      // Правая диагональ
+                        checkLine(x, y, -1, 1, player)) {     // Левая диагональ
                         return true;
                     }
                 }
@@ -126,52 +112,41 @@ public class Board implements CellClickListener, Cloneable{
         return false;
     }
 
-    private boolean checkLine(int x, int y, int dx, int dy, int player, int maxCheck) {
+    // Проверяет линию из 4 подряд в любом направлении
+    private boolean checkLine(int x, int y, int dx, int dy, int player) {
         int count = 0;
-
-        // Проверяем линию в обоих направлениях от последней поставленной фишки
         for (int i = -3; i <= 3; i++) {
             int currentX = x + i * dx;
             int currentY = y + i * dy;
-
-            // Проверка границ массива
-            if (currentX < 0 || currentX >= board[0].length || currentY < 0 || currentY >= board.length) {
-                continue; // Пропускаем эту итерацию, если вышли за границы
+            if (currentX < 0 || currentX >= width || currentY < 0 || currentY >= height) {
+                continue;
             }
-
             if (board[currentY][currentX] == player) {
                 count++;
                 if (count == 4) {
-                    return true; // Найдена линия из 4 фишек
+                    return true;
                 }
             } else {
-                count = 0; // Сбрасываем счетчик, если встретили фишку другого игрока или пустое место
+                count = 0;
             }
         }
-
-        return false; // Линия из 4 фишек не найдена
+        return false;
     }
 
     public void clear() {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                board[i][j] = 0;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                board[y][x] = 0;
             }
         }
     }
 
-
-
     @Override
     public void onCellClick(int column) {
-//        int row = get_y_coord(column);
-//        if (row != -1) {
-//            makeMove(column, getCurrPlayer());
-//
-//        }
+        // ...existing code...
     }
     @Override
-    public  void notifyListeners(int x, int y, int player) {
+    public void notifyListeners(int x, int y, int player) {
         for (BoardChangeListener listener : listeners) {
             listener.onBoardChange(x, y, player);
         }
@@ -185,10 +160,10 @@ public class Board implements CellClickListener, Cloneable{
     // cloning
     @Override
     public Board clone() {
-        Board clone = new Board(height, width);
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                clone.board[i][j] = board[i][j];
+        Board clone = new Board(width, height);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                clone.board[y][x] = board[y][x];
             }
         }
         return clone;
