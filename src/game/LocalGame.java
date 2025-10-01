@@ -46,8 +46,10 @@ public class LocalGame implements GameRestartListener {
         currentPlayer = player1;
     }
 
-    public LocalGame(ConnectFourGUI gui, HumanPlayer player1, AIPlayer player2) {
+    public LocalGame(ConnectFourGUI gui, HumanPlayer humanPlayer, AIPlayer AIPlayer) {
         System.out.println("create local game");
+        this.player1 = humanPlayer;
+        this.player2 = AIPlayer;
         board = new Board();
         this.gui = gui;
         board.addListener(gui);

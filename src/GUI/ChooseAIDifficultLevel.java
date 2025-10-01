@@ -41,7 +41,7 @@ public class ChooseAIDifficultLevel extends Application {
             System.out.println("normal difficult level was choosen");
         });
         hardButton.setOnAction(e -> {
-            startAIGame(primaryStage, 5);
+            startAIGame(primaryStage, 10);
             System.out.println("hard difficult level was choosen");
         });
 

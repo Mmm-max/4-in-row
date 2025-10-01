@@ -112,6 +112,10 @@ public class Board implements CellClickListener, Cloneable{
         return 0;
     }
 
+    public int[][] getGrid() {
+        return board;
+    }
+
     public boolean checkWin(int player) {
         for (int y = 0; y < width; y++) {
             for (int x = 0; x < height; x++) {

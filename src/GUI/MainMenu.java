@@ -75,7 +75,7 @@ public class MainMenu extends Application implements ChoosePlayersListener, Choo
 
     public void onAIDifficultyChosen(int difficulty) {
         HumanPlayer humanPlayer = new HumanPlayer("Human player", 1);
-        AIPlayer  aiPlayer = new AIPlayer("AI player", difficulty);
+        AIPlayer  aiPlayer = new AIPlayer("AI player", 2, difficulty);
         ConnectFourGUI gui = new ConnectFourGUI(humanPlayer.getName(), aiPlayer.getName());
         gui.start(new Stage());
         new Thread(() -> {

@@ -24,6 +24,9 @@ public class AIPlayer extends Player {
     @Override
     public int  getMove(Board board) {
         int bestMove = tree.findBestMove(board, difficulty, this.getPlayerNumber());
+        if (bestMove == -1) {
+            System.out.println("couldn't find best move");
+        }
         System.out.println("bestMove: " + bestMove);
         return bestMove != -1 ? bestMove : findFirstLegalMove(board);
     }

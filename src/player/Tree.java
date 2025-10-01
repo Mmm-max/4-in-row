@@ -3,11 +3,8 @@ package player;
 import game.Board;
 import org.jetbrains.annotations.NotNull;
 
-import javax.naming.InitialContext;
-
 public class Tree {
     private Node root;
-    private int maxDepth;
 
     private static int WINNING_SCORE = 10000;
     private static int DRAW_SCORE = 0;
@@ -99,6 +96,7 @@ public class Tree {
                 alpha = Math.max(alpha, moveValue);
             }
         }
+        System.out.println("best move: " + bestMove + "best value: " + bestValue);
         return bestMove;
     }
 
@@ -108,9 +106,14 @@ public class Tree {
         int opponentPlayer = 3 - aiPlayer;
 
         if (board.checkWin(aiPlayer)) {
+            System.out.println("FINDING AI WIN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             return WINNING_SCORE;
         } else if (board.checkWin(opponentPlayer)) {
+            System.out.println("FINDING AI LOOSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             return -WINNING_SCORE;
+        }
+        if (board.isFull()) {
+            return DRAW_SCORE;
         }
         // Если игра не окончена, возвращаем нейтральную оценку
         // TODO: Добавить более сложную оценочную функцию
