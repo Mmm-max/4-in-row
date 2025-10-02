@@ -38,6 +38,10 @@ public class Board implements CellClickListener, Cloneable{
 
     public Board() {
         board = new int[8][8];
+        /* TODO: Во всей логике программы прослеживается неправильное (помененное местами)
+         *  использование height и width
+         * В будущем желательно поменять все как надо для читаемости
+        */
         height = 7;
         width = 6;
     }
