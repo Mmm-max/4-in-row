@@ -18,6 +18,14 @@ public class Board implements CellClickListener, Cloneable{
     public static int max(int a, int b) {return a > b ? a : b;
     }
 
+    public int getMoves() {
+        return moves;
+    }
+
+    public void setMoves(int moves) {
+        this.moves = moves;
+    }
+
 //    @Override
 //    public void addListener(BoardChangeListener listener) {
 //        listeners.add(listener);
@@ -169,6 +177,7 @@ public class Board implements CellClickListener, Cloneable{
                 board[i][j] = 0;
             }
         }
+        moves = 0;
     }
 
 
