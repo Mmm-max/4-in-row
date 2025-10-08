@@ -8,9 +8,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import player.AIPlayer;
+import player.HumanPlayer;
 
 
-public class MainMenu extends Application implements ChoosePlayersListener {
+public class MainMenu extends Application implements ChoosePlayersListener, ChooseAIDifficultyListener {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Main menu");
@@ -71,6 +73,18 @@ public class MainMenu extends Application implements ChoosePlayersListener {
         }).start();
     }
 
+    public void onAIDifficultyChosen(int difficulty) {
+        HumanPlayer humanPlayer = new HumanPlayer("Human player", 1);
+        AIPlayer  aiPlayer = new AIPlayer("AI player", 2, difficulty);
+        ConnectFourGUI gui = new ConnectFourGUI(humanPlayer.getName(), aiPlayer.getName());
+        gui.start(new Stage());
+        new Thread(() -> {
+            System.out.println("start AI logic");
+            LocalGame localGame = new LocalGame(gui, humanPlayer, aiPlayer);
+            localGame.start();
+        }).start();
+    }
+
     private void startLocalGame(Stage primaryStage) {
         System.out.println("Local game");
         ChoosePlayers choosePlayers = new ChoosePlayers();
@@ -82,6 +96,7 @@ public class MainMenu extends Application implements ChoosePlayersListener {
     private void startAIGame(Stage primaryStage) {
         System.out.println("AI game");
         ChooseAIDifficultLevel chooseAIDifficultLevel = new ChooseAIDifficultLevel();
+        chooseAIDifficultLevel.addListener(this);
         chooseAIDifficultLevel.start(new Stage());
         primaryStage.close();
     }

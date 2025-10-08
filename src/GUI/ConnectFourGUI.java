@@ -188,7 +188,6 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
 
     private void restart() {
         notifyRestartListeners();
-
     }
 
     private void exit() {

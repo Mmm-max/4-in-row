@@ -15,10 +15,14 @@ public class HumanPlayer extends Player implements CellClickListener {
     }
 
     @Override
+    public int getMove(Board board) {
+        return getMoveByGui(board);
+    }
+
     public int getMoveByConsole(Board board) {
         System.out.println("Enter your move:");
         int move = scanner.nextInt();
-        if (board.isLegalMove(move) == 0) {
+        if (!board.isLegalMove(move)) {
             System.out.println("Illegal move");
             return getMoveByConsole(board);
         }
@@ -41,7 +45,7 @@ public class HumanPlayer extends Player implements CellClickListener {
         }
         int temp = move;
         move = -1;
-        if (board.isLegalMove(temp) == 0) {
+        if (!board.isLegalMove(temp)) {
             System.out.println("Illegal move");
             return getMoveByGui(board);
         }

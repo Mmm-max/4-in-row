@@ -6,17 +6,20 @@ import javafx.stage.Stage;
 import player.*;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 
 public class LocalGame implements GameRestartListener {
     private Board board;
     private ConnectFourGUI gui;
-    private HumanPlayer player1;
-    private HumanPlayer player2;
-    private HumanPlayer currentPlayer;
+    private Player player1;
+    private Player player2;
+    private Player currentPlayer;
     private int movesCnt = 0;
     private boolean isRunning = true;
     private Thread gameThread;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     // two players
     public LocalGame(ConnectFourGUI gui) {
@@ -32,10 +35,39 @@ public class LocalGame implements GameRestartListener {
         currentPlayer = player1;
     }
 
+    public LocalGame(ConnectFourGUI gui, HumanPlayer player1, HumanPlayer player2) {
+        System.out.println("create local game");
+        board = new Board();
+        this.gui = gui;
+        board.addListener(gui);
+        gui.addListener((HumanPlayer) player1);
+        gui.addListener((HumanPlayer) player2);
+        gui.addRestartListeners(this);
+        currentPlayer = player1;
+    }
+
+    public LocalGame(ConnectFourGUI gui, HumanPlayer humanPlayer, AIPlayer AIPlayer) {
+        System.out.println("create local game");
+        this.player1 = humanPlayer;
+        this.player2 = AIPlayer;
+        board = new Board();
+        this.gui = gui;
+        board.addListener(gui);
+        gui.addListener((HumanPlayer) player1);
+        gui.addRestartListeners(this);
+        currentPlayer = player1;
+    }
+
+
     public LocalGame(ConnectFourGUI gui, String player1Name, String player2Name) {
         this(gui);
         this.player1.setName(player1Name);
         this.player2.setName(player2Name);
+    }
+
+    public LocalGame(ConnectFourGUI gui, String playerName, String AINAme, int difficult) {
+        this(gui);
+
     }
 
     @Override
@@ -79,7 +111,7 @@ public class LocalGame implements GameRestartListener {
 
         while (isRunning) {
             System.out.println(currentPlayer.getName() + "'s turn");
-            int move = ((HumanPlayer) currentPlayer).getMoveByGui(board);
+            int move = currentPlayer.getMove(board);
             if (move == -1) {
                 break;
             }
@@ -93,7 +125,7 @@ public class LocalGame implements GameRestartListener {
                 Platform.runLater(() -> gui.victoryWindow(winner));
 
 //                break;
-            } else if (board.isFull(movesCnt) == 1) {
+            } else if (board.isFull()) {
                 System.out.println("It's a draw!");
                 Platform.runLater(() -> gui.drawWindow());
 //                break;
