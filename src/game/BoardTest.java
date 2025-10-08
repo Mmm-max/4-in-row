@@ -115,4 +115,25 @@ public class BoardTest {
         board.makeMove(2, 1);
         assertEquals(0, board.isWinningMove(2, 1));
     }
+
+    @Test
+    @DisplayName("Проверка на отсутсвие ничьи")
+    public void testDraw1() {
+        Board board = new Board(7, 6);
+        board.makeMove(0, 1);
+        board.makeMove(1, 1);
+        board.makeMove(2, 1);
+        board.makeMove(2, 1);
+        board.makeMove(2, 1);
+        assertFalse(board.isFull());
+    }
+
+    @Test
+    @DisplayName("Проверка на ничью, когда она есть по подсчету ходов")
+    public void testDraw2() {
+        Board board = new Board(7, 6);
+        board.setMoves(7 * 6);
+        assertTrue(board.isFull());
+    }
+
 }
