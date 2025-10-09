@@ -11,13 +11,6 @@ public class Board implements CellClickListener, Cloneable{
     List<BoardChangeListener> listeners = new ArrayList<>();
 
 
-    public static int min(int a, int b) {
-        return a < b ? a : b;
-    }
-
-    public static int max(int a, int b) {return a > b ? a : b;
-    }
-
     public int getMoves() {
         return moves;
     }
@@ -53,6 +46,7 @@ public class Board implements CellClickListener, Cloneable{
         height = 7;
         width = 6;
     }
+
     public int getHeight() {
         return width;
     }
@@ -78,7 +72,7 @@ public class Board implements CellClickListener, Cloneable{
         }
     }
 
-    private int getCell(int x, int y) {
+    public int getCell(int x, int y) {
         return board[y][x];
     }
 
