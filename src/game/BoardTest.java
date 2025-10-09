@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 
 public class BoardTest {
@@ -605,6 +607,81 @@ public class BoardTest {
     public void testGetWidth() {
         Board board = new Board(7, 6);
         assertEquals(7, board.getWidth());
+    }
+
+    @Test
+    @Tag("setMoves")
+    @DisplayName("Проверка на корректность установки количества ходов")
+    public void testSetMoves() {
+        Board board = new Board(7, 6);
+        board.setMoves(10);
+        assertEquals(10, board.getMoves());
+    }
+
+    @Test
+    @Tag("getMoves")
+    @DisplayName("Проверка на корректность получения количества ходов")
+    public void testGetMoves() {
+        Board board = new Board(7, 6);
+        board.makeMove(1, 1);
+        board.makeMove(2, 2);
+        assertEquals(2, board.getMoves());
+    }
+
+    @Test
+    @Tag("switchPlayer")
+    @DisplayName("Проверка на корректность смены текущего игрока")
+    public void testSwitchPlayer() {
+        Board board = new Board(7, 6);
+        assertEquals(1, board.getCurrPlayer());
+        board.switchPlayer();
+        assertEquals(2, board.getCurrPlayer());
+        board.switchPlayer();
+        assertEquals(1, board.getCurrPlayer());
+    }
+
+    // TODO: recreate printBoard test
+    @Test
+    @Tag("printBoard")
+    @DisplayName("Проверка корректности вывода доски в консоль")
+    public void testPrintBoard() {
+        // Сохраняем оригинальный System.out
+        PrintStream originalOut = System.out;
+
+        try {
+            // Создаем ByteArrayOutputStream для перехвата вывода
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            PrintStream testOut = new PrintStream(outputStream);
+            System.setOut(testOut);
+
+            // Создаем доску и добавляем фишки
+            Board board = new Board(3, 3);
+            board.makeMove(0, 1);
+            board.makeMove(1, 2);
+
+            // Вызываем метод
+            board.printBoard();
+
+            // Получаем вывод
+            String output = outputStream.toString();
+
+            // Проверяем что вывод содержит ожидаемые элементы
+            assertTrue(output.contains("height: 3 width: 3"));
+            assertTrue(output.contains("0 0 0"));
+            assertTrue(output.contains("1 2 0"));
+
+        } finally {
+            // Восстанавливаем оригинальный System.out
+            System.setOut(originalOut);
+        }
+    }
+
+    @Test
+    @Tag("getCell")
+    @DisplayName("проверка корретности обрабатывания запроса на определенную клетку")
+    public void testGetCell() {
+        Board board = new Board(3, 3);
+        assertEquals(0, board.getCell(0, 0));
     }
 
 
