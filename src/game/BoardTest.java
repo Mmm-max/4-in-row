@@ -22,7 +22,6 @@ public class BoardTest {
         board.makeMove(1, 1);
         board.makeMove(2, 1);
         board.makeMove(3, 1);
-//        board.printBoard();
         assertEquals(1, board.isWinningMove(3, 1));
     }
 
@@ -58,7 +57,6 @@ public class BoardTest {
         board.makeMove(2, 1);
 
         board.makeMove(3, 1);
-//        board.printBoard();
         assertEquals(1, board.isWinningMove(3, 1));
     }
 
@@ -78,7 +76,6 @@ public class BoardTest {
         board.makeMove(3, 2);
         board.makeMove(3, 2);
         board.makeMove(3, 1);
-//        board.printBoard();
         assertEquals(1, board.isWinningMove(3, 1));
     }
 
@@ -104,7 +101,6 @@ public class BoardTest {
         board.makeMove(0, 2);
 
         board.makeMove(2, 1);
-//        board.printBoard();
         assertEquals(1, board.isWinningMove(2, 1));
     }
 
@@ -149,7 +145,6 @@ public class BoardTest {
         Board board = new Board(7, 6);
         board.makeMove(1, 1);
         assertEquals(0, board.makeMove(1, 2));
-//        board.printBoard();
         assertEquals(1, board.getCell(1, 5));
         assertEquals(2, board.getCell(1, 4));
         assertEquals(0, board.getCell(0, 2));
@@ -208,12 +203,10 @@ public class BoardTest {
     @DisplayName("Тест граничных условий для checkLine - выход за левую границу")
     public void testCheckLineBoundaryLeft() {
         Board board = new Board(7, 6);
-        // Размещаем фишки у левого края
         board.makeMove(0, 1);
         board.makeMove(0, 1);
         board.makeMove(0, 1);
         board.makeMove(0, 1);
-        // Проверяем что метод корректно обрабатывает выход за границу currentX < 0
         assertEquals(1, board.isWinningMove(0, 1));
     }
 
@@ -222,8 +215,7 @@ public class BoardTest {
     @DisplayName("Тест граничных условий для checkLine - выход за правую границу")
     public void testCheckLineBoundaryRight() {
         Board board = new Board(7, 6);
-        // Размещаем фишки у правого края
-        int rightCol = 6; // последний столбец
+        int rightCol = 6; 
         board.makeMove(rightCol, 1);
         board.makeMove(rightCol, 1);
         board.makeMove(rightCol, 1);
@@ -236,14 +228,12 @@ public class BoardTest {
     @DisplayName("Тест граничных условий для checkLine - выход за верхнюю границу")
     public void testCheckLineBoundaryTop() {
         Board board = new Board(7, 6);
-        // Заполняем столбец почти полностью для проверки currentY < 0
         board.makeMove(3, 1);
         board.makeMove(3, 2);
         board.makeMove(3, 1);
         board.makeMove(3, 2);
         board.makeMove(3, 1);
         board.makeMove(3, 2);
-        // Последний ход в верхнюю позицию
         assertEquals(-1, board.makeMove(3, 1));
     }
 
@@ -252,8 +242,7 @@ public class BoardTest {
     @DisplayName("Тест диагональной победы у границы - правый верхний угол")
     public void testDiagonalWinAtBoundary() {
         Board board = new Board(7, 6);
-        // Создаем диагональ, которая упирается в границы
-        board.makeMove(6, 2); // правый край
+        board.makeMove(6, 2); 
         board.makeMove(6, 2);
         board.makeMove(6, 2);
         board.makeMove(6, 1);
@@ -274,7 +263,6 @@ public class BoardTest {
     @DisplayName("Тест вычисления координат currentX и currentY с отрицательными смещениями")
     public void testNegativeOffsetCalculation() {
         Board board = new Board(7, 6);
-        // Тест для проверки корректности вычисления currentX = x + i * dx при отрицательных i и dx
         board.makeMove(3, 1);
         board.makeMove(2, 2);
         board.makeMove(2, 1);
@@ -285,7 +273,6 @@ public class BoardTest {
         board.makeMove(0, 2);
         board.makeMove(0, 2);
         board.makeMove(0, 1);
-        // Проверяем левую диагональ при i = -3, dx = -1
         assertEquals(1, board.isWinningMove(0, 1));
     }
 
@@ -293,12 +280,11 @@ public class BoardTest {
     @Tag("checkLine")
     @DisplayName("Тест максимальных координат currentX >= board[0].length")
     public void testMaxBoundaryX() {
-        Board board = new Board(4, 4); // Маленькая доска для легкого достижения границ
+        Board board = new Board(4, 4); 
         board.makeMove(0, 1);
         board.makeMove(1, 1);
         board.makeMove(2, 1);
         board.makeMove(3, 1);
-        // При проверке горизонтали с i=3, dx=1 получим currentX = 3 + 3*1 = 6 >= 4
         assertEquals(1, board.isWinningMove(3, 1));
     }
 
@@ -306,13 +292,11 @@ public class BoardTest {
     @Tag("checkLine")
     @DisplayName("Тест максимальных координат currentY >= board.length")
     public void testMaxBoundaryY() {
-        Board board = new Board(7, 4); // Высота = 4
-        // Заполняем колонку полностью
+        Board board = new Board(7, 4);
         board.makeMove(3, 1);
         board.makeMove(3, 1);
         board.makeMove(3, 1);
         board.makeMove(3, 1);
-        // При вертикальной проверке currentY может выйти за границы
         assertEquals(1, board.isWinningMove(3, 1));
     }
 
@@ -321,10 +305,9 @@ public class BoardTest {
     @DisplayName("Тест поиска свободной позиции в пустом столбце")
     public void testGetYCoordEmptyColumn() {
         Board board = new Board(7, 6);
-        // В пустом столбце должна возвращаться нижняя позиция (height-1)
         int result = board.makeMove(3, 1);
-        assertEquals(0, result); // не победа
-        assertEquals(1, board.getCell(3, 5)); // фишка должна быть в нижней позиции
+        assertEquals(0, result);
+        assertEquals(1, board.getCell(3, 5));
     }
 
     @Test
@@ -332,14 +315,12 @@ public class BoardTest {
     @DisplayName("Тест поиска свободной позиции в частично заполненном столбце")
     public void testGetYCoordPartiallyFilled() {
         Board board = new Board(7, 6);
-        // Заполняем столбец частично
-        board.makeMove(2, 1); // позиция y=5
-        board.makeMove(2, 2); // позиция y=4
-        board.makeMove(2, 1); // позиция y=3
-
-        // Следующая фишка должна попасть на позицию y=2
+        board.makeMove(2, 1);
         board.makeMove(2, 2);
-        assertEquals(2, board.getCell(2, 2)); // проверяем что фишка на правильной позиции
+        board.makeMove(2, 1);
+
+        board.makeMove(2, 2);
+        assertEquals(2, board.getCell(2, 2));
     }
 
     @Test
@@ -347,15 +328,13 @@ public class BoardTest {
     @DisplayName("Тест поиска позиции в полностью заполненном столбце")
     public void testGetYCoordFullColumn() {
         Board board = new Board(7, 6);
-        // Заполняем столбец полностью
-        board.makeMove(1, 1); // y=5
-        board.makeMove(1, 2); // y=4
-        board.makeMove(1, 1); // y=3
-        board.makeMove(1, 2); // y=2
-        board.makeMove(1, 1); // y=1
-        board.makeMove(1, 2); // y=0
+        board.makeMove(1, 1); 
+        board.makeMove(1, 2); 
+        board.makeMove(1, 1); 
+        board.makeMove(1, 2); 
+        board.makeMove(1, 1); 
+        board.makeMove(1, 2); 
 
-        // Попытка добавить еще одну фишку должна вернуть -1
         assertEquals(-1, board.makeMove(1, 1));
     }
 
@@ -365,17 +344,16 @@ public class BoardTest {
     public void testGetYCoordFillingOrder() {
         Board board = new Board(7, 6);
 
-        // Добавляем фишки по одной и проверяем правильность позиций
         board.makeMove(4, 1);
-        assertEquals(1, board.getCell(4, 5)); // первая фишка внизу
-        assertEquals(0, board.getCell(4, 4)); // выше пусто
+        assertEquals(1, board.getCell(4, 5)); 
+        assertEquals(0, board.getCell(4, 4)); 
 
         board.makeMove(4, 2);
-        assertEquals(2, board.getCell(4, 4)); // вторая фишка выше первой
-        assertEquals(0, board.getCell(4, 3)); // еще выше пусто
+        assertEquals(2, board.getCell(4, 4)); 
+        assertEquals(0, board.getCell(4, 3)); 
 
         board.makeMove(4, 1);
-        assertEquals(1, board.getCell(4, 3)); // третья фишка продолжает заполнение вверх
+        assertEquals(1, board.getCell(4, 3)); 
     }
 
     @Test
@@ -384,15 +362,12 @@ public class BoardTest {
     public void testGetYCoordTopPosition() {
         Board board = new Board(7, 6);
 
-        // Заполняем столбец до самого верха
         for (int i = 0; i < 6; i++) {
             board.makeMove(0, (i % 2) + 1);
         }
 
-        // Проверяем что верхняя позиция заполнена
         assertNotEquals(0, board.getCell(0, 0));
 
-        // Попытка добавить еще одну фишку должна быть отклонена
         assertEquals(-1, board.makeMove(0, 1));
     }
 
@@ -403,14 +378,11 @@ public class BoardTest {
         Board originalBoard = new Board(7, 6);
         Board clonedBoard = originalBoard.clone();
 
-        // Проверяем что клон не тот же объект
         assertNotSame(originalBoard, clonedBoard);
 
-        // Проверяем что размеры совпадают
         assertEquals(originalBoard.getWidth(), clonedBoard.getWidth());
         assertEquals(originalBoard.getHeight(), clonedBoard.getHeight());
 
-        // Проверяем что все ячейки пустые и одинаковые
         for (int x = 0; x < originalBoard.getWidth(); x++) {
             for (int y = 0; y < originalBoard.getHeight(); y++) {
                 assertEquals(0, clonedBoard.getCell(x, y));
@@ -425,7 +397,6 @@ public class BoardTest {
     public void testCloneBoardWithPieces() {
         Board originalBoard = new Board(7, 6);
 
-        // Добавляем фишки
         originalBoard.makeMove(0, 1);
         originalBoard.makeMove(1, 2);
         originalBoard.makeMove(2, 1);
@@ -433,10 +404,8 @@ public class BoardTest {
 
         Board clonedBoard = originalBoard.clone();
 
-        // Проверяем что клон не тот же объект
         assertNotSame(originalBoard, clonedBoard);
 
-        // Проверяем что все фишки скопированы корректно
         for (int x = 0; x < originalBoard.getWidth(); x++) {
             for (int y = 0; y < originalBoard.getHeight(); y++) {
                 assertEquals(originalBoard.getCell(x, y), clonedBoard.getCell(x, y));
@@ -453,14 +422,12 @@ public class BoardTest {
 
         Board clonedBoard = originalBoard.clone();
 
-        // Изменяем оригинальную доску
         originalBoard.makeMove(4, 2);
 
-        // Проверяем что клон не изменился
         assertEquals(1, originalBoard.getCell(3, 5));
         assertEquals(2, originalBoard.getCell(4, 5));
         assertEquals(1, clonedBoard.getCell(3, 5));
-        assertEquals(0, clonedBoard.getCell(4, 5)); // в клоне этой фишки быть не должно
+        assertEquals(0, clonedBoard.getCell(4, 5)); 
     }
 
     @Test
@@ -497,11 +464,9 @@ public class BoardTest {
         Board board = new Board(7, 6);
         int[][] grid = board.getGrid();
 
-        // Проверяем размеры
-        assertEquals(6, grid.length); // высота (width в Board)
-        assertEquals(7, grid[0].length); // ширина (height в Board)
+        assertEquals(6, grid.length); 
+        assertEquals(7, grid[0].length); 
 
-        // Проверяем что все ячейки пустые
         for (int y = 0; y < grid.length; y++) {
             for (int x = 0; x < grid[0].length; x++) {
                 assertEquals(0, grid[y][x]);
@@ -515,20 +480,18 @@ public class BoardTest {
     public void testGetGridWithPieces() {
         Board board = new Board(7, 6);
 
-        // Добавляем фишки
-        board.makeMove(0, 1); // должна быть в grid[5][0]
-        board.makeMove(0, 2); // должна быть в grid[4][0]
-        board.makeMove(3, 1); // должна быть в grid[5][3]
-        board.makeMove(6, 2); // должна быть в grid[5][6]
+        board.makeMove(0, 1); 
+        board.makeMove(0, 2); 
+        board.makeMove(3, 1); 
+        board.makeMove(6, 2); 
 
         int[][] grid = board.getGrid();
 
-        // Проверяем корректность размещения фишек
-        assertEquals(1, grid[5][0]); // нижняя фишка в столбце 0
-        assertEquals(2, grid[4][0]); // верхняя фишка в столбце 0
-        assertEquals(1, grid[5][3]); // фишка в столбце 3
-        assertEquals(2, grid[5][6]); // фишка в столбце 6
-        assertEquals(0, grid[3][0]); // пустое место выше фишек
+        assertEquals(1, grid[5][0]); 
+        assertEquals(2, grid[4][0]); 
+        assertEquals(1, grid[5][3]); 
+        assertEquals(2, grid[5][6]); 
+        assertEquals(0, grid[3][0]); 
     }
 
     @Test
@@ -541,14 +504,11 @@ public class BoardTest {
         int[][] grid1 = board.getGrid();
         int[][] grid2 = board.getGrid();
 
-        // Проверяем что возвращается та же ссылка на массив
         assertSame(grid1, grid2);
 
-        // Изменяем доску
         board.makeMove(2, 2);
 
-        // Проверяем что изменения отражаются в уже полученной сетке
-        assertEquals(2, grid1[4][2]); // новая фишка должна быть видна
+        assertEquals(2, grid1[4][2]); 
     }
 
     @Test
@@ -560,13 +520,10 @@ public class BoardTest {
 
         int[][] grid = board.getGrid();
 
-        // Изменяем сетку напрямую
         grid[3][1] = 2;
 
-        // Проверяем что изменение отразилось в доске
         assertEquals(2, board.getCell(1, 3));
 
-        // Проверяем через повторное получение сетки
         int[][] newGrid = board.getGrid();
         assertEquals(2, newGrid[3][1]);
     }
@@ -575,23 +532,21 @@ public class BoardTest {
     @Tag("getGrid")
     @DisplayName("Тест getGrid для досок разных размеров")
     public void testGetGridDifferentSizes() {
-        // Маленькая доска
         Board smallBoard = new Board(3, 4);
         smallBoard.makeMove(1, 1);
 
         int[][] smallGrid = smallBoard.getGrid();
-        assertEquals(4, smallGrid.length); // высота
-        assertEquals(3, smallGrid[0].length); // ширина
-        assertEquals(1, smallGrid[3][1]); // фишка в нижней позиции
+        assertEquals(4, smallGrid.length); 
+        assertEquals(3, smallGrid[0].length); 
+        assertEquals(1, smallGrid[3][1]); 
 
-        // Большая доска
         Board bigBoard = new Board(10, 8);
         bigBoard.makeMove(5, 2);
 
         int[][] bigGrid = bigBoard.getGrid();
-        assertEquals(8, bigGrid.length); // высота
-        assertEquals(10, bigGrid[0].length); // ширина
-        assertEquals(2, bigGrid[7][5]); // фишка в нижней позиции
+        assertEquals(8, bigGrid.length); 
+        assertEquals(10, bigGrid[0].length); 
+        assertEquals(2, bigGrid[7][5]); 
     }
 
     @Test
@@ -641,38 +596,30 @@ public class BoardTest {
         assertEquals(1, board.getCurrPlayer());
     }
 
-    // TODO: recreate printBoard test
     @Test
     @Tag("printBoard")
     @DisplayName("Проверка корректности вывода доски в консоль")
     public void testPrintBoard() {
-        // Сохраняем оригинальный System.out
         PrintStream originalOut = System.out;
 
         try {
-            // Создаем ByteArrayOutputStream для перехвата вывода
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             PrintStream testOut = new PrintStream(outputStream);
             System.setOut(testOut);
 
-            // Создаем доску и добавляем фишки
             Board board = new Board(3, 3);
             board.makeMove(0, 1);
             board.makeMove(1, 2);
 
-            // Вызываем метод
             board.printBoard();
 
-            // Получаем вывод
             String output = outputStream.toString();
 
-            // Проверяем что вывод содержит ожидаемые элементы
             assertTrue(output.contains("height: 3 width: 3"));
             assertTrue(output.contains("0 0 0"));
             assertTrue(output.contains("1 2 0"));
 
         } finally {
-            // Восстанавливаем оригинальный System.out
             System.setOut(originalOut);
         }
     }
@@ -718,7 +665,6 @@ public class BoardTest {
     @DisplayName("Проверка победы по диагонали слева направо")
     public void testCheckWinDiagonalLeftToRight() {
         Board board = new Board(7, 6);
-        // Создаем диагональ для игрока 1
         board.makeMove(0, 1);
 
         board.makeMove(1, 2);
@@ -742,7 +688,6 @@ public class BoardTest {
     @DisplayName("Проверка победы по диагонали справа налево")
     public void testCheckWinDiagonalRightToLeft() {
         Board board = new Board(7, 6);
-        // Создаем диагональ для игрока 2
         board.makeMove(3, 2);
 
         board.makeMove(2, 1);
@@ -778,7 +723,7 @@ public class BoardTest {
         Board board = new Board(7, 6);
         board.makeMove(0, 1);
         board.makeMove(1, 1);
-        board.makeMove(2, 1); // только 3 фишки подряд
+        board.makeMove(2, 1); 
 
         assertFalse(board.checkWin(1));
         assertFalse(board.checkWin(2));
@@ -789,7 +734,6 @@ public class BoardTest {
     @DisplayName("Проверка победы в углу доски")
     public void testCheckWinAtCorner() {
         Board board = new Board(7, 6);
-        // Победа в правом нижнем углу
         board.makeMove(6, 1);
         board.makeMove(5, 1);
         board.makeMove(4, 1);
@@ -803,7 +747,6 @@ public class BoardTest {
     @DisplayName("Проверка победы при смешанных фишках на доске")
     public void testCheckWinMixedPieces() {
         Board board = new Board(7, 6);
-        // Добавляем фишки разных игроков
         board.makeMove(0, 1);
         board.makeMove(0, 2);
         board.makeMove(1, 2);
@@ -813,7 +756,6 @@ public class BoardTest {
         board.makeMove(3, 2);
         board.makeMove(3, 1);
 
-        // Создаем победную комбинацию для игрока 2 по горизонтали
         board.makeMove(4, 2);
         board.makeMove(5, 2);
         board.makeMove(6, 2);
@@ -832,27 +774,23 @@ public class BoardTest {
         board.makeMove(2, 1);
         board.makeMove(3, 2);
 
-        // Проверяем что доска не пуста
         assertNotEquals(0, board.getCell(0, 5));
         assertNotEquals(0, board.getCell(1, 5));
         assertNotEquals(0, board.getCell(2, 5));
         assertNotEquals(0, board.getCell(3, 5));
         assertEquals(4, board.getMoves());
 
-        // Очищаем доску
         board.clear();
 
-        // Проверяем что доска пуста
         for (int x = 0; x < board.getWidth(); x++) {
             for (int y = 0; y < board.getHeight(); y++) {
                 assertEquals(0, board.getCell(x, y));
             }
         }
         assertEquals(0, board.getMoves());
-        assertEquals(1, board.getCurrPlayer()); // текущий игрок должен быть сброшен на 1
+        assertEquals(1, board.getCurrPlayer()); 
     }
 
-    // Добавьте в начало класса BoardTest
     private static class TestBoardChangeListener implements BoardChangeListener {
         public int callCount = 0;
         public int lastX = -1;
@@ -869,12 +807,10 @@ public class BoardTest {
 
         @Override
         public void addListener(CellClickListener listener) {
-            // Пустая реализация для теста
         }
 
         @Override
         public void printListeners() {
-            // Пустая реализация для теста
         }
         @Override
         public void notifyListeners(int x) {
@@ -891,13 +827,12 @@ public class BoardTest {
         board.addListener(listener);
         assertEquals(1, board.listeners.size());
 
-        // Проверяем что слушатель вызывается при ходе
         board.makeMove(0, 1);
         assertEquals(1, listener.callCount);
         assertEquals(0, listener.lastX);
-        assertEquals(5, listener.lastY); // нижняя позиция в столбце
+        assertEquals(5, listener.lastY); 
         assertEquals(1, listener.lastPlayer);
-        assertEquals(1, board.listeners.size()); // слушатель остался в списке
+        assertEquals(1, board.listeners.size()); 
     }
 
     @Test
@@ -931,12 +866,10 @@ public class BoardTest {
 
         board.notifyListeners(2, 1, 1);
 
-        // Проверяем что все слушатели получили уведомление
         assertEquals(1, listener1.callCount);
         assertEquals(1, listener2.callCount);
         assertEquals(1, listener3.callCount);
 
-        // Проверяем что все получили одинаковые данные
         assertEquals(2, listener1.lastX);
         assertEquals(2, listener2.lastX);
         assertEquals(2, listener3.lastX);
@@ -954,7 +887,6 @@ public class BoardTest {
     public void testNotifyListenersNoListeners() {
         Board board = new Board(7, 6);
 
-        // Вызов не должен приводить к исключению
         assertDoesNotThrow(() -> {
             board.notifyListeners(0, 0, 1);
         });
@@ -974,7 +906,6 @@ public class BoardTest {
         board.notifyListeners(5, 0, 1);
 
         assertEquals(3, listener.callCount);
-        // Проверяем последний вызов
         assertEquals(5, listener.lastX);
         assertEquals(0, listener.lastY);
         assertEquals(1, listener.lastPlayer);
@@ -989,13 +920,11 @@ public class BoardTest {
 
         board.addListener(listener);
 
-        // Тест с минимальными значениями
         board.notifyListeners(0, 0, 1);
         assertEquals(0, listener.lastX);
         assertEquals(0, listener.lastY);
         assertEquals(1, listener.lastPlayer);
 
-        // Тест с максимальными значениями для доски 7x6
         board.notifyListeners(6, 5, 2);
         assertEquals(6, listener.lastX);
         assertEquals(5, listener.lastY);
