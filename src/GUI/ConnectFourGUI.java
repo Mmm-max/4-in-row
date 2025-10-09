@@ -39,7 +39,7 @@ public class ConnectFourGUI extends javafx.application.Application implements Bo
     private Label player1Count;
     private Label player2Count;
 
-    ConnectFourGUI(String player1, String player2) {
+    public ConnectFourGUI(String player1, String player2) {
         this.name = "Connect four";
         this.player1 = player1;
         this.player2 = player2;

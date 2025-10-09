@@ -1,5 +1,6 @@
 package game;
 
+import GUI.ConnectFourGUI;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Tags;
@@ -684,5 +685,320 @@ public class BoardTest {
         assertEquals(0, board.getCell(0, 0));
     }
 
+    @Test
+    @Tag("checkWin")
+    @DisplayName("Проверка победы игрока 1 по горизонтали")
+    public void testCheckWinHorizontalPlayer1() {
+        Board board = new Board(7, 6);
+        board.makeMove(0, 1);
+        board.makeMove(1, 1);
+        board.makeMove(2, 1);
+        board.makeMove(3, 1);
 
+        assertTrue(board.checkWin(1));
+        assertFalse(board.checkWin(2));
+    }
+
+    @Test
+    @Tag("checkWin")
+    @DisplayName("Проверка победы игрока 2 по вертикали")
+    public void testCheckWinVerticalPlayer2() {
+        Board board = new Board(7, 6);
+        board.makeMove(3, 2);
+        board.makeMove(3, 2);
+        board.makeMove(3, 2);
+        board.makeMove(3, 2);
+
+        assertTrue(board.checkWin(2));
+        assertFalse(board.checkWin(1));
+    }
+
+    @Test
+    @Tag("checkWin")
+    @DisplayName("Проверка победы по диагонали слева направо")
+    public void testCheckWinDiagonalLeftToRight() {
+        Board board = new Board(7, 6);
+        // Создаем диагональ для игрока 1
+        board.makeMove(0, 1);
+
+        board.makeMove(1, 2);
+        board.makeMove(1, 1);
+
+        board.makeMove(2, 2);
+        board.makeMove(2, 2);
+        board.makeMove(2, 1);
+
+        board.makeMove(3, 2);
+        board.makeMove(3, 2);
+        board.makeMove(3, 2);
+        board.makeMove(3, 1);
+
+        assertTrue(board.checkWin(1));
+        assertFalse(board.checkWin(2));
+    }
+
+    @Test
+    @Tag("checkWin")
+    @DisplayName("Проверка победы по диагонали справа налево")
+    public void testCheckWinDiagonalRightToLeft() {
+        Board board = new Board(7, 6);
+        // Создаем диагональ для игрока 2
+        board.makeMove(3, 2);
+
+        board.makeMove(2, 1);
+        board.makeMove(2, 2);
+
+        board.makeMove(1, 1);
+        board.makeMove(1, 1);
+        board.makeMove(1, 2);
+
+        board.makeMove(0, 1);
+        board.makeMove(0, 1);
+        board.makeMove(0, 1);
+        board.makeMove(0, 2);
+
+        assertTrue(board.checkWin(2));
+        assertFalse(board.checkWin(1));
+    }
+
+    @Test
+    @Tag("checkWin")
+    @DisplayName("Проверка отсутствия победы на пустой доске")
+    public void testCheckWinEmptyBoard() {
+        Board board = new Board(7, 6);
+
+        assertFalse(board.checkWin(1));
+        assertFalse(board.checkWin(2));
+    }
+
+    @Test
+    @Tag("checkWin")
+    @DisplayName("Проверка отсутствия победы при недостаточном количестве фишек")
+    public void testCheckWinInsufficientPieces() {
+        Board board = new Board(7, 6);
+        board.makeMove(0, 1);
+        board.makeMove(1, 1);
+        board.makeMove(2, 1); // только 3 фишки подряд
+
+        assertFalse(board.checkWin(1));
+        assertFalse(board.checkWin(2));
+    }
+
+    @Test
+    @Tag("checkWin")
+    @DisplayName("Проверка победы в углу доски")
+    public void testCheckWinAtCorner() {
+        Board board = new Board(7, 6);
+        // Победа в правом нижнем углу
+        board.makeMove(6, 1);
+        board.makeMove(5, 1);
+        board.makeMove(4, 1);
+        board.makeMove(3, 1);
+
+        assertTrue(board.checkWin(1));
+    }
+
+    @Test
+    @Tag("checkWin")
+    @DisplayName("Проверка победы при смешанных фишках на доске")
+    public void testCheckWinMixedPieces() {
+        Board board = new Board(7, 6);
+        // Добавляем фишки разных игроков
+        board.makeMove(0, 1);
+        board.makeMove(0, 2);
+        board.makeMove(1, 2);
+        board.makeMove(1, 1);
+        board.makeMove(2, 1);
+        board.makeMove(2, 2);
+        board.makeMove(3, 2);
+        board.makeMove(3, 1);
+
+        // Создаем победную комбинацию для игрока 2 по горизонтали
+        board.makeMove(4, 2);
+        board.makeMove(5, 2);
+        board.makeMove(6, 2);
+
+        assertTrue(board.checkWin(2));
+        assertFalse(board.checkWin(1));
+    }
+
+    @Test
+    @Tag("clear")
+    @DisplayName("Проверка очистки доски")
+    public void testClearBoard() {
+        Board board = new Board(7, 6);
+        board.makeMove(0, 1);
+        board.makeMove(1, 2);
+        board.makeMove(2, 1);
+        board.makeMove(3, 2);
+
+        // Проверяем что доска не пуста
+        assertNotEquals(0, board.getCell(0, 5));
+        assertNotEquals(0, board.getCell(1, 5));
+        assertNotEquals(0, board.getCell(2, 5));
+        assertNotEquals(0, board.getCell(3, 5));
+        assertEquals(4, board.getMoves());
+
+        // Очищаем доску
+        board.clear();
+
+        // Проверяем что доска пуста
+        for (int x = 0; x < board.getWidth(); x++) {
+            for (int y = 0; y < board.getHeight(); y++) {
+                assertEquals(0, board.getCell(x, y));
+            }
+        }
+        assertEquals(0, board.getMoves());
+        assertEquals(1, board.getCurrPlayer()); // текущий игрок должен быть сброшен на 1
+    }
+
+    // Добавьте в начало класса BoardTest
+    private static class TestBoardChangeListener implements BoardChangeListener {
+        public int callCount = 0;
+        public int lastX = -1;
+        public int lastY = -1;
+        public int lastPlayer = -1;
+
+        @Override
+        public void onBoardChange(int x, int y, int player) {
+            callCount++;
+            lastX = x;
+            lastY = y;
+            lastPlayer = player;
+        }
+
+        @Override
+        public void addListener(CellClickListener listener) {
+            // Пустая реализация для теста
+        }
+
+        @Override
+        public void printListeners() {
+            // Пустая реализация для теста
+        }
+        @Override
+        public void notifyListeners(int x) {
+        }
+    }
+
+    @Test
+    @Tag("addListener")
+    @DisplayName("Проверка добавления слушателя")
+    public void testAddListener() {
+        Board board = new Board(7, 6);
+        TestBoardChangeListener listener = new TestBoardChangeListener();
+
+        board.addListener(listener);
+        assertEquals(1, board.listeners.size());
+
+        // Проверяем что слушатель вызывается при ходе
+        board.makeMove(0, 1);
+        assertEquals(1, listener.callCount);
+        assertEquals(0, listener.lastX);
+        assertEquals(5, listener.lastY); // нижняя позиция в столбце
+        assertEquals(1, listener.lastPlayer);
+        assertEquals(1, board.listeners.size()); // слушатель остался в списке
+    }
+
+    @Test
+    @Tag("notifyListeners")
+    @DisplayName("Проверка уведомления одного слушателя")
+    public void testNotifyListenersOneListener() {
+        Board board = new Board(7, 6);
+        TestBoardChangeListener listener = new TestBoardChangeListener();
+
+        board.addListener(listener);
+        board.notifyListeners(3, 4, 2);
+
+        assertEquals(1, listener.callCount);
+        assertEquals(3, listener.lastX);
+        assertEquals(4, listener.lastY);
+        assertEquals(2, listener.lastPlayer);
+    }
+
+    @Test
+    @Tag("notifyListeners")
+    @DisplayName("Проверка уведомления нескольких слушателей")
+    public void testNotifyListenersMultipleListeners() {
+        Board board = new Board(7, 6);
+        TestBoardChangeListener listener1 = new TestBoardChangeListener();
+        TestBoardChangeListener listener2 = new TestBoardChangeListener();
+        TestBoardChangeListener listener3 = new TestBoardChangeListener();
+
+        board.addListener(listener1);
+        board.addListener(listener2);
+        board.addListener(listener3);
+
+        board.notifyListeners(2, 1, 1);
+
+        // Проверяем что все слушатели получили уведомление
+        assertEquals(1, listener1.callCount);
+        assertEquals(1, listener2.callCount);
+        assertEquals(1, listener3.callCount);
+
+        // Проверяем что все получили одинаковые данные
+        assertEquals(2, listener1.lastX);
+        assertEquals(2, listener2.lastX);
+        assertEquals(2, listener3.lastX);
+        assertEquals(1, listener1.lastY);
+        assertEquals(1, listener2.lastY);
+        assertEquals(1, listener3.lastY);
+        assertEquals(1, listener1.lastPlayer);
+        assertEquals(1, listener2.lastPlayer);
+        assertEquals(1, listener3.lastPlayer);
+    }
+
+    @Test
+    @Tag("notifyListeners")
+    @DisplayName("Проверка уведомления без слушателей")
+    public void testNotifyListenersNoListeners() {
+        Board board = new Board(7, 6);
+
+        // Вызов не должен приводить к исключению
+        assertDoesNotThrow(() -> {
+            board.notifyListeners(0, 0, 1);
+        });
+    }
+
+    @Test
+    @Tag("notifyListeners")
+    @DisplayName("Проверка множественных уведомлений")
+    public void testNotifyListenersMultipleCalls() {
+        Board board = new Board(7, 6);
+        TestBoardChangeListener listener = new TestBoardChangeListener();
+
+        board.addListener(listener);
+
+        board.notifyListeners(1, 2, 1);
+        board.notifyListeners(3, 4, 2);
+        board.notifyListeners(5, 0, 1);
+
+        assertEquals(3, listener.callCount);
+        // Проверяем последний вызов
+        assertEquals(5, listener.lastX);
+        assertEquals(0, listener.lastY);
+        assertEquals(1, listener.lastPlayer);
+    }
+
+    @Test
+    @Tag("notifyListeners")
+    @DisplayName("Проверка уведомления с граничными значениями")
+    public void testNotifyListenersBoundaryValues() {
+        Board board = new Board(7, 6);
+        TestBoardChangeListener listener = new TestBoardChangeListener();
+
+        board.addListener(listener);
+
+        // Тест с минимальными значениями
+        board.notifyListeners(0, 0, 1);
+        assertEquals(0, listener.lastX);
+        assertEquals(0, listener.lastY);
+        assertEquals(1, listener.lastPlayer);
+
+        // Тест с максимальными значениями для доски 7x6
+        board.notifyListeners(6, 5, 2);
+        assertEquals(6, listener.lastX);
+        assertEquals(5, listener.lastY);
+        assertEquals(2, listener.lastPlayer);
+    }
 }

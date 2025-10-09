@@ -178,11 +178,11 @@ public class Board implements CellClickListener, Cloneable{
 
     @Override
     public void onCellClick(int column) {
-//        int row = get_y_coord(column);
-//        if (row != -1) {
-//            makeMove(column, getCurrPlayer());
-//
-//        }
+        int row = get_y_coord(column);
+        if (row != -1) {
+            makeMove(column, getCurrPlayer());
+
+        }
     }
     @Override
     public  void notifyListeners(int x, int y, int player) {
